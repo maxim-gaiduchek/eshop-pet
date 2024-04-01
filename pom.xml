@@ -19,7 +19,7 @@
 
     <properties>
         <java.version>21</java.version>
-        <lombok.version>1.18.26</lombok.version>
+        <lombok.version>1.18.30</lombok.version>
         <flyway.version>9.15.0</flyway.version>
         <postgresql.version>42.6.0</postgresql.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
@@ -95,11 +95,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>${flyway.version}</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>jakarta.validation</groupId>
             <artifactId>jakarta.validation-api</artifactId>
