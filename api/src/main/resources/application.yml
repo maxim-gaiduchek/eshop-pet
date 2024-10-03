@@ -1,0 +1,70 @@
+spring:
+  autoconfigure:
+    exclude:
+      - 'org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration'
+      - 'org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration'
+  application:
+    name: 'api'
+  mvc:
+    dispatch-options-request: true
+  batch:
+    job:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: '2KB'
+      max-file-size: '100MB'
+      max-request-size: '100MB'
+  datasource:
+    username: 'postgres'
+    password: 'postgres'
+    url: 'jdbc:postgresql://localhost:5432/postgres'
+    name: 'e-shop-pet'
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+        jdbc:
+          time_zone: 'UTC'
+    hibernate:
+      ddl-auto: 'none'
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    schemas: 'public'
+    validate-on-migrate: false
+    user: 'postgres'
+    password: 'postgres'
+    url: 'jdbc:postgresql://localhost:5432/postgres'
+    out-of-order: true
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 8080
+  servlet:
+    context-path: '/api'
+
+jwt:
+  secret:
+    access: 'aWxvdmVqYXZh'
+    refresh: 'aWxvdmVzcHJpbmc='
+
+security:
+  api-key: 'dummy-api-key'
+
+logging:
+  level:
+    gaiduchek.maksym.api: TRACE
+    # org.springframework: TRACE
+
+feign:
+  security:
+    url: 'http://localhost:8090/security'
