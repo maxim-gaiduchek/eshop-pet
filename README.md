@@ -4,7 +4,13 @@ My E-Shop API and website pet project
 
 # Conceptual scheme
 
-<img alt="logo" width="100%" src="conceptual_scheme.png">
+Approximate conceptual scheme of the model:
+
+<img alt="conceptual_scheme" width="100%" src="conceptual_scheme.png">
+
+Actual entities scheme (to be updated):
+
+<img alt="entities_scheme" width="100%" src="entities_scheme.png">
 
 # Technologies
 
