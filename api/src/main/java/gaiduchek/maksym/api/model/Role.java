@@ -6,9 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 @RequiredArgsConstructor
 public enum Role implements GrantedAuthority {
 
-    ROLE_USER("ROLE_USER"),
+    ROLE_CUSTOMER("ROLE_CUSTOMER"),
     ROLE_SELLER("ROLE_SELLER"),
-    ROLE_MANAGER("ROLE_MANAGER");
+    ROLE_MANAGER("ROLE_MANAGER"),
+    ;
 
     private final String value;
 

@@ -46,7 +46,7 @@ create table if not exists filters
     created_at          timestamp,
     updated_at          timestamp,
 
-    filters_category_id integer      not null,
+    filter_category_id integer      not null,
     responsible_id      integer      not null,
     name                varchar(255) not null
 );
@@ -55,7 +55,7 @@ alter table filters
     drop constraint if exists FK_filter_filter_category;
 alter table filters
     add constraint FK_filter_filter_category
-        foreign key (filters_category_id)
+        foreign key (filter_category_id)
             references filter_categories;
 
 alter table filters
@@ -74,9 +74,10 @@ create table if not exists products
     product_category_id integer,
     seller_id           integer      not null,
     name                varchar(255) not null,
-    description         varchar(255),
+    description         text,
     cost                float        not null,
-    count               integer      not null
+    count               integer      not null,
+    deleted             boolean      not null
 );
 
 alter table products
@@ -91,7 +92,7 @@ alter table products
 alter table products
     add constraint FK_product_seller
         foreign key (seller_id)
-            references sellers (id);
+            references sellers;
 
 create table if not exists product_to_filter
 (
@@ -173,7 +174,7 @@ create table if not exists reviews
 
     product_id  integer not null,
     customer_id integer not null,
-    grade       float   not null,
+    grade       integer not null,
     description varchar(255)
 );
 
