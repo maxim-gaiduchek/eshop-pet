@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: 'security'
+  mvc:
+    dispatch-options-request: true
+  batch:
+    job:
+      enabled: false
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    username: 'postgres'
+    password: 'postgres'
+    url: 'jdbc:postgresql://localhost:5432/'
+    name: 'postgres'
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: 'org.hibernate.dialect.PostgreSQLDialect'
+        default_schema: 'security'
+        jdbc:
+          lob.non_contextual_creation: true
+          time_zone: 'UTC'
+    hibernate:
+      ddl-auto: 'none'
+  flyway:
+    baseline-on-migrate: true
+    enabled: true
+    schemas: 'security'
+    validate-on-migrate: false
+    user: 'postgres'
+    password: 'postgres'
+    url: 'jdbc:postgresql://localhost:5432/'
+    out-of-order: true
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 8090
+  servlet:
+    context-path: '/security'
+
+jwt:
+  secret:
+    access: 'aWxzZGdmaWhzZ2FkaWxmaGRhaXNoZm9kaHNhbGt2aGl1ZHNoYXVzaGRmb3VoYWlsdXNkaGZsaWRzaGFmZ3NpdWFoZGZpdWhkbGtzaGZnZHNpYWd2aXlhZWl1ZGZobGl1ZGhhbGl1ZmhsZHNoYWZpaHNsamtkZmhzZGtnZnlzZGd1eXZnaWRpbGhha2hmbGtoYXNkbGtqZmhoamtnamtoZ2poZ2RhZmhzamdmZGdzYW95Z2Z5ZGd1aHZoZGJhbGpiYnZkYWl1c2hoO29pd2lvc2phZG5mbGtqZHNsYWZsaXNhZGp2a2pka2Jza2poZmxrbGJzamxobGFramhhZ2l1Y2hlZHNsaGFvaGZkb2loc2Fsa2hjYWtqYmNvaXdoYW9pZmhmYWpoZ2toYw=='
+    refresh: 'YWZsaGFsa2J2amxoYnNsamhnY2xrYWhsa2Nsa2phbGhma3Nha2pnbW5iY2phbmxrYnZpbGFoaWxjYnNrYWJramNsa3FwanZkc2poaGZnc2RramhuaWdsa2F1ZmhjaWphaG87Y2h1eWFnaGlhYnZpYmFsZ2RsaWFodWNobGtoYWhsamZjYmxrYXNzbGhidmtiYWthbGhkZ2t5YWdoY25ha2NrYWxrZGpoamFoZmFqbmNqYWp2a25mZmFrampodmFubGpuYWtqYmRoaWFkaWhsYWpjbG5ha2F2aGtqYWhsa2pmbGl1YXlpbHVjeWhhaW91amlvampraGFnZnVocWpqZmtqdmpxb3Vob2lqZmpxaWpm'
+  cookie:
+    age:
+      access: 18000
+      refresh: 2678400
+    secure: false
+
+security:
+  api-key: 'dummy-api-key'
+
+logging:
+  level:
+    gaiduchek.maksym.security: TRACE
+
+feign:
+  api:
+    url: 'http://localhost:8080/api'

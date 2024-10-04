@@ -1,7 +1,7 @@
-package gaiduchek.maksym.api.configurations;
+package gaiduchek.maksym.security.configurations;
 
-import gaiduchek.maksym.api.security.services.interfaces.JwtProvider;
-import gaiduchek.maksym.api.utils.JwtUtils;
+import gaiduchek.maksym.security.services.interfaces.JwtProvider;
+import gaiduchek.maksym.security.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

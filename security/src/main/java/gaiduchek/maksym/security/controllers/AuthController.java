@@ -1,0 +1,79 @@
+package gaiduchek.maksym.security.controllers;
+
+import gaiduchek.maksym.security.dto.JwtRequest;
+import gaiduchek.maksym.security.dto.JwtResponse;
+import gaiduchek.maksym.security.exceptions.AccessException;
+import gaiduchek.maksym.security.exceptions.exceptioncodes.AccessExceptionCodes;
+import gaiduchek.maksym.security.services.interfaces.AuthService;
+import gaiduchek.maksym.security.utils.CookieUtils;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
+
+@RestController
+@RequiredArgsConstructor
+public class AuthController {
+
+    @Value("${jwt.cookie.age.refresh}")
+    private int refreshTokenAge;
+
+    private static final String REFRESH_TOKEN_COOKIE_NAME = "refreshToken";
+
+    private final AuthService authService;
+
+    @PostMapping("/login")
+    public JwtResponse login(@RequestBody @Valid JwtRequest authRequest,
+                             HttpServletResponse httpResponse) {
+        var jwtResponse = authService.login(authRequest);
+        var newRefreshTokenCookie = createRefreshTokenCookie(jwtResponse.getRefreshToken());
+        httpResponse.addHeader(HttpHeaders.SET_COOKIE, newRefreshTokenCookie.toString());
+        return jwtResponse;
+    }
+
+    private ResponseCookie createRefreshTokenCookie(String refreshToken) {
+        return CookieUtils.createHttpOnlyCookie(
+                REFRESH_TOKEN_COOKIE_NAME, refreshToken, "/", refreshTokenAge);
+    }
+
+    @GetMapping("/logout")
+    public void logout(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        var refreshTokenCookie = CookieUtils.getCookie(httpRequest.getCookies(), REFRESH_TOKEN_COOKIE_NAME);
+        if (refreshTokenCookie == null) {
+            throw new AccessException(AccessExceptionCodes.EXPIRED_JWT);
+        }
+        authService.logout(refreshTokenCookie.getValue());
+        CookieUtils.deleteCookie(httpRequest.getCookies(), httpResponse, REFRESH_TOKEN_COOKIE_NAME);
+    }
+
+    @GetMapping("/access")
+    public JwtResponse getNewAccessToken(HttpServletRequest httpRequest) {
+        var refreshTokenCookie = CookieUtils.getCookie(httpRequest.getCookies(), REFRESH_TOKEN_COOKIE_NAME);
+        var refreshToken = Optional.ofNullable(refreshTokenCookie)
+                .map(Cookie::getValue)
+                .orElse(null);
+        return authService.getAccessToken(refreshToken);
+    }
+
+    @GetMapping("/refresh")
+    public JwtResponse refreshAccessToken(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        var refreshTokenCookie = CookieUtils.getCookie(httpRequest.getCookies(), REFRESH_TOKEN_COOKIE_NAME);
+        var refreshToken = Optional.ofNullable(refreshTokenCookie)
+                .map(Cookie::getValue)
+                .orElse(null);
+        var jwtResponse = authService.refresh(refreshToken);
+        var newRefreshTokenCookie = createRefreshTokenCookie(jwtResponse.getRefreshToken());
+        httpResponse.addHeader(HttpHeaders.SET_COOKIE, newRefreshTokenCookie.toString());
+        return jwtResponse;
+    }
+}

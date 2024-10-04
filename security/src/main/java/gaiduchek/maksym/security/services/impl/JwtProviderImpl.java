@@ -1,4 +1,4 @@
-package gaiduchek.maksym.api.security.services.impl;
+package gaiduchek.maksym.security.services.impl;
 
 import gaiduchek.maksym.security.constants.JwtClaimsConstants;
 import gaiduchek.maksym.security.dto.UserDto;
