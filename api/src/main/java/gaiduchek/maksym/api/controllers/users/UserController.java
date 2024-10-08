@@ -1,9 +1,10 @@
-package gaiduchek.maksym.api.controllers;
+package gaiduchek.maksym.api.controllers.users;
 
 import gaiduchek.maksym.api.dto.UserDto;
 import gaiduchek.maksym.api.mappers.UserMapper;
 import gaiduchek.maksym.api.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +21,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/internal/{id}")
-    // @PreAuthorize("@accessService.checkTechnicalEndpoint(#apiKey)")
+    @PreAuthorize("@accessService.checkTechnicalEndpoint(#apiKey)")
     public UserDto getByIdInternal(@PathVariable Long id,
                                    @RequestHeader(value = X_API_KEY, required = false) String apiKey) {
         var user = userService.getByIdOrThrow(id);
@@ -28,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/internal/emails")
-    // @PreAuthorize("@accessService.checkTechnicalEndpoint(#apiKey)")
+    @PreAuthorize("@accessService.checkTechnicalEndpoint(#apiKey)")
     public UserDto getByEmailInternal(@ModelAttribute String email,
                                       @RequestHeader(value = X_API_KEY, required = false) String apiKey) {
         var user = userService.getByEmailOrThrow(email);
