@@ -1,4 +1,4 @@
-package gaiduchek.maksym.api.exceptions.exceptioncodes;
+package gaiduchek.maksym.security.exceptions.exceptioncodes;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

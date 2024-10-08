@@ -1,4 +1,4 @@
-package gaiduchek.maksym.api.security.services.interfaces;
+package gaiduchek.maksym.security.services.interfaces;
 
 import gaiduchek.maksym.security.dto.UserDto;
 import gaiduchek.maksym.security.model.UserAuth;

@@ -1,4 +1,4 @@
-package gaiduchek.maksym.api.security.services.impl;
+package gaiduchek.maksym.security.services.impl;
 
 import gaiduchek.maksym.security.constants.JwtClaimsConstants;
 import gaiduchek.maksym.security.dto.UserDto;
@@ -64,7 +64,7 @@ public class JwtProviderImpl implements JwtProvider {
                 .signWith(jwtRefreshSecret)
                 .claim(JwtClaimsConstants.USER_ID_KEY, userAuth.getId())
                 .claim(JwtClaimsConstants.CREATED_AT, now.toString())
-                .claim(JwtClaimsConstants.TYPE, "ACCESS")
+                .claim(JwtClaimsConstants.TYPE, "REFRESH")
                 .compact();
     }
 
