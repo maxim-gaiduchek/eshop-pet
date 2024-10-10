@@ -5,7 +5,7 @@ import feign.RequestTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import static gaiduchek.maksym.security.constants.HeadersConstants.X_API_KEY;
+import static gaiduchek.maksym.api.constants.HeadersConstants.X_API_KEY;
 
 @Component
 public class ApiKeyRequestInterceptor implements RequestInterceptor {

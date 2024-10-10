@@ -22,4 +22,9 @@ public class AbstractException extends RuntimeException {
         this.code = exceptionCode.getCode();
         this.description = exceptionCode.getDescription().formatted(formatArgs);
     }
+
+    public AbstractException(String code, String description) {
+        this.code = code;
+        this.description = description;
+    }
 }

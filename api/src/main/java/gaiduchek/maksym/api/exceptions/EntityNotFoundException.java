@@ -11,4 +11,8 @@ public class EntityNotFoundException extends AbstractException {
     public EntityNotFoundException(ExceptionCodes code, Object... formatArgs) {
         super(code, formatArgs);
     }
+
+    public EntityNotFoundException(String code, String description) {
+        super(code, description);
+    }
 }
