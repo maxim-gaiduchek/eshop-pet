@@ -7,4 +7,8 @@ public class AccessException extends AbstractException {
     public AccessException(ExceptionCodes code) {
         super(code);
     }
+
+    public AccessException(String code, String description) {
+        super(code, description);
+    }
 }

@@ -79,9 +79,9 @@ public class AuthServiceImpl implements AuthService {
             throw new AccessException(AccessExceptionCodes.INVALID_JWT);
         }
         final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
-        final Long id = claims.get(JwtClaimsConstants.USER_ID_KEY, Long.class);
-        var userAuth = userAuthService.getByUserIdOrThrow(id);
-        var user = userService.getByIdOtThrow(id);
+        final Long userId = claims.get(JwtClaimsConstants.USER_ID_KEY, Long.class);
+        var userAuth = userAuthService.getByUserIdOrThrow(userId);
+        var user = userService.getByIdOtThrow(userId);
         var refreshTokens = userAuth.getRefreshTokens();
         if (refreshTokens == null || !refreshTokens.contains(refreshToken)) {
             throw new AccessException(AccessExceptionCodes.INVALID_JWT);
@@ -93,7 +93,7 @@ public class AuthServiceImpl implements AuthService {
         return JwtResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(newRefreshToken)
-                .userId(userAuth.getUserId())
+                .userId(user.getId())
                 .role(user.getRole())
                 .build();
     }
