@@ -1,6 +1,6 @@
 package gaiduchek.maksym.api.controllers.users;
 
-import gaiduchek.maksym.api.dto.UserDto;
+import gaiduchek.maksym.api.dto.users.UserDto;
 import gaiduchek.maksym.api.mappers.UserMapper;
 import gaiduchek.maksym.api.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;

@@ -1,17 +1,18 @@
 package gaiduchek.maksym.api.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@SuperBuilder
-public class CustomerDto extends UserDto {
+@Builder
+public class ErrorDto {
 
-    private String address;
+    private String code;
+    private String description;
 }

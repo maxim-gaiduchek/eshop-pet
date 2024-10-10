@@ -1,7 +1,7 @@
 package gaiduchek.maksym.api.mappers;
 
-import gaiduchek.maksym.api.dto.users.CustomerDto;
-import gaiduchek.maksym.api.model.Customer;
+import gaiduchek.maksym.api.dto.users.SellerDto;
+import gaiduchek.maksym.api.model.Seller;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -9,9 +9,9 @@ import org.mapstruct.ReportingPolicy;
 @Mapper(componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         builder = @Builder(disableBuilder = true))
-public interface CustomerMapper {
+public interface SellerMapper {
 
-    CustomerDto toDto(Customer customer);
+    SellerDto toDto(Seller seller);
 
-    Customer toEntity(CustomerDto customerDto);
+    Seller toEntity(SellerDto sellerDto);
 }

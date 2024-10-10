@@ -1,5 +1,6 @@
 package gaiduchek.maksym.security.services.impl;
 
+import gaiduchek.maksym.security.dto.UserCredentialsDto;
 import gaiduchek.maksym.security.exceptions.EntityNotFoundException;
 import gaiduchek.maksym.security.exceptions.exceptioncodes.UserAuthExceptionCodes;
 import gaiduchek.maksym.security.model.UserAuth;
@@ -29,5 +30,14 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public UserAuth save(UserAuth userAuth) {
         return userAuthRepository.save(userAuth);
+    }
+
+    @Override
+    public void createAuth(UserCredentialsDto credentials) {
+        var userAuth = UserAuth.builder()
+                .userId(credentials.getUserId())
+                .password(credentials.getPassword())
+                .build();
+        userAuthRepository.save(userAuth);
     }
 }

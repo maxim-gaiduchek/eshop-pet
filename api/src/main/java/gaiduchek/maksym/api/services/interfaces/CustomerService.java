@@ -1,6 +1,6 @@
 package gaiduchek.maksym.api.services.interfaces;
 
-import gaiduchek.maksym.api.dto.CustomerDto;
+import gaiduchek.maksym.api.dto.users.CustomerDto;
 import gaiduchek.maksym.api.model.Customer;
 
 import java.util.Optional;

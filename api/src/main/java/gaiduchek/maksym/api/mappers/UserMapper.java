@@ -1,6 +1,6 @@
 package gaiduchek.maksym.api.mappers;
 
-import gaiduchek.maksym.api.dto.UserDto;
+import gaiduchek.maksym.api.dto.users.UserDto;
 import gaiduchek.maksym.api.model.User;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
