@@ -15,24 +15,4 @@ public interface AccessService {
     boolean isAdministrator();
 
     boolean isWorker();
-
-    /*boolean hasUserPossibilityToGetCustomer();
-
-    boolean hasUserPossibilityToCreateCustomer();
-
-    boolean hasUserPossibilityToUpdateCustomer();
-
-    boolean hasUserPossibilityToCreateSeller();
-
-    boolean hasUserPossibilityToUpdateSeller();
-
-    boolean hasUserPossibilityToGetManager();
-
-    boolean hasUserPossibilityToCreateManager();
-
-    boolean hasUserPossibilityToUpdateManager();
-
-    boolean hasUserPossibilityToGetAdministrator();
-
-    boolean hasUserPossibilityToUpdateAdministrator();*/
 }
