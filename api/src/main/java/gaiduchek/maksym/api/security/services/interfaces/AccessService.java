@@ -1,5 +1,7 @@
 package gaiduchek.maksym.api.security.services.interfaces;
 
+import gaiduchek.maksym.api.model.Company;
+
 public interface AccessService {
 
     boolean checkTechnicalEndpoint(String apiKey);
@@ -15,4 +17,6 @@ public interface AccessService {
     boolean isAdministrator();
 
     boolean isWorker();
+
+    void checkUserOwnsCompany(Company company);
 }

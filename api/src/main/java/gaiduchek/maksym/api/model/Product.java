@@ -34,8 +34,8 @@ public class Product extends BaseEntity {
     @Column(name = "count")
     private Integer count;
     @ManyToOne
-    @JoinColumn(name = "seller_id")
-    private Seller seller;
+    @JoinColumn(name = "company_id")
+    private Company company;
     @ManyToOne
     @JoinColumn(name = "product_category_id")
     private ProductCategory productCategory;
@@ -46,4 +46,6 @@ public class Product extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "filter_id")
     )
     private List<Filter> filters;
+    @Column(name = "deleted")
+    private Boolean deleted;
 }
