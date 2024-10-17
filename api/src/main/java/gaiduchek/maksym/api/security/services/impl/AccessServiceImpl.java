@@ -1,5 +1,8 @@
 package gaiduchek.maksym.api.security.services.impl;
 
+import gaiduchek.maksym.api.exceptions.ValidationException;
+import gaiduchek.maksym.api.exceptions.exceptioncodes.CompanyExceptionCodes;
+import gaiduchek.maksym.api.model.Company;
 import gaiduchek.maksym.api.model.Role;
 import gaiduchek.maksym.api.security.services.interfaces.AccessService;
 import gaiduchek.maksym.api.security.services.interfaces.SecurityProvider;
@@ -34,15 +37,15 @@ public class AccessServiceImpl implements AccessService {
     }
 
     @Override
-    public boolean isSeller() {
-        var auth = securityProvider.fetchAuthentication();
-        return auth != null && auth.hasRole(Role.ROLE_SELLER);
-    }
-
-    @Override
     public boolean isCustomer() {
         var auth = securityProvider.fetchAuthentication();
         return auth != null && auth.hasRole(Role.ROLE_CUSTOMER);
+    }
+
+    @Override
+    public boolean isSeller() {
+        var auth = securityProvider.fetchAuthentication();
+        return auth != null && auth.hasRole(Role.ROLE_SELLER);
     }
 
     @Override
@@ -60,5 +63,13 @@ public class AccessServiceImpl implements AccessService {
     @Override
     public boolean isWorker() {
         return isManager() || isAdministrator();
+    }
+
+    @Override
+    public void checkUserOwnsCompany(Company company) {
+        var userId = securityProvider.fetchUserId();
+        if (Objects.equals(company.getSeller().getId(), userId)) {
+            throw new ValidationException(CompanyExceptionCodes.COMPANY_IS_NOT_OWNED_BY_SELLER, company.getId());
+        }
     }
 }
