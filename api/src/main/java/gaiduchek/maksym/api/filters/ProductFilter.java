@@ -48,6 +48,10 @@ public class ProductFilter extends BaseFilter<Product> {
     protected List<Predicate> getSpecificationPredicates(Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
         var predicates = super.getSpecificationPredicates(root, query, builder);
 
+        if (accessService != null && accessService.isCustomer()) {
+            deleted = List.of(false);
+        }
+
         if (StringUtils.isNoneEmpty(name)) {
             var pattern = "%%%s%%".formatted(name.toLowerCase());
             var lower = builder.lower(root.get("name"));
