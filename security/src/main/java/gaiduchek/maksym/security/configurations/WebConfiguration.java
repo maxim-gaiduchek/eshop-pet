@@ -1,4 +1,4 @@
-package gaiduchek.maksym.api.configurations;
+package gaiduchek.maksym.security.configurations;
 
 import lombok.NonNull;
 import org.springframework.context.annotation.Bean;

@@ -3,13 +3,19 @@ import {getUser} from "../../../Services/UserService";
 import {Flex} from "antd";
 import {Link} from "react-router-dom";
 
+const defaultUser = {
+    name: "Test",
+    surname: "Test",
+};
+
 export function LoginUserProfile() {
-    const [user, setUser] = useState({name: "Maksym", surname: "Gaiduchek"});
+    const [user, setUser] = useState(defaultUser);
     let loginUserId = localStorage.getItem("loginUserId");
     useEffect(() => {
         getUser(loginUserId)
             .then(data => data.json())
             .then(json => setUser(json))
+            .catch(() => setUser(defaultUser))
     }, []);
     return (
         <Flex>

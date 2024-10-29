@@ -1,24 +1,34 @@
 import {useState} from "react";
 import {login} from "../Services/LoginService";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
+import {Button, Input} from "antd";
+import {MainLayout} from "../Components/Layouts/MainLayout";
 import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
-import {Button, Flex, Input} from "antd";
 
 export function LoginPage() {
     document.title = "Login | E-Shop Pet";
     const [userLogin, setUserLogin] = useState("");
     const [userPassword, setUserPassword] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const loginOnClick = async () => {
-        const user = await login(userLogin, userPassword);
-        localStorage.setItem("loginUserId", user.id);
-        navigate("/shop");
+        setLoading(true);
+        login(userLogin, userPassword)
+            .then(user => {
+                console.log(user);
+                localStorage.setItem("loginUserId", user.id);
+                navigate("/shop");
+            })
+            .catch(() => {
+                setLoading(false);
+            });
     }
     return (
-        <CenteredLayout>
-            <Flex style={{flexDirection: "column", alignItems: "center"}}>
+        <MainLayout>
+            <CenteredLayout>
                 <h1>Login</h1>
-                <Input type={"text"} placeholder={"Login"}
+                <p>Don't have an account? <Link to={"/register"}>Register</Link></p>
+                <Input type={"email"} placeholder={"Email"}
                        value={userLogin}
                        onChange={(e) => setUserLogin(e.target.value)}
                        style={{width: "100%"}}/>
@@ -26,8 +36,8 @@ export function LoginPage() {
                        value={userPassword}
                        onChange={(e) => setUserPassword(e.target.value)}
                        style={{width: "100%"}}/>
-                <Button onClick={loginOnClick}>Login</Button>
-            </Flex>
-        </CenteredLayout>
+                <Button onClick={loginOnClick} disabled={loading} loading={loading}>Login</Button>
+            </CenteredLayout>
+        </MainLayout>
     )
 }

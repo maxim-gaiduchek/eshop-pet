@@ -3,10 +3,13 @@ import {LoginUserProfile} from "./Components/LoginUserProfile";
 
 export function LoginProfile() {
     let loginUserId = localStorage.getItem("loginUserId");
-    if (!loginUserId) {
+    if (loginUserId) {
+        return (
+            <LoginUserProfile/>
+        )
+    } else {
         return (
             <LoginRegisterButtons/>
         )
     }
-    return <LoginUserProfile/>
 }

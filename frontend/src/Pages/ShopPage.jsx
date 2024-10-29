@@ -114,7 +114,7 @@ export function ShopPage() {
             <Sider style={{
                 height: "100%",
                 backgroundColor: secondaryBackgroundColor,
-                overflowY: "auto",
+                overflowY: "hidden",
             }}>
                 <p>Filters: </p>
             </Sider>

@@ -1,4 +1,4 @@
-package gaiduchek.maksym.api.security.model;
+package gaiduchek.maksym.security.model;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.Getter;
@@ -9,16 +9,15 @@ import java.util.Arrays;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.PUT;
 
 @Getter
 @RequiredArgsConstructor
 public enum UnsecuredEndpoint {
 
-    GET_SWAGGER("/api/swagger-ui/.*", GET),
-    GET_API_DOCS("/api/v3/api-docs.*", GET),
-    INTERNAL_GET_USER("/api/users/internal.*", GET),
-    GET_PRODUCTS("/api/products.*", GET),
-    POST_CUSTOMERS("/api/customers.*", POST),
+    GET_ALL("/security/.*", GET),
+    POST_ALL("/security/.*", POST),
+    PUT_CREDENTIALS("/security/credentials", PUT),
     ;
 
     private final String urlPattern;
