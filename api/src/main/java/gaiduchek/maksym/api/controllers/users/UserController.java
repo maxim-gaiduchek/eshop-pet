@@ -20,6 +20,12 @@ public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
 
+    @GetMapping("/{id}")
+    public UserDto get(@PathVariable Long id) {
+        var user = userService.getByIdOrThrow(id);
+        return userMapper.toDto(user);
+    }
+
     @GetMapping("/internal/{id}")
     @PreAuthorize("@accessService.checkTechnicalEndpoint(#apiKey)")
     public UserDto getByIdInternal(@PathVariable Long id,

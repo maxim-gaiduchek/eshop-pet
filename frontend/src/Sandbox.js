@@ -2,7 +2,7 @@ import './App.css'
 import React, {useEffect, useState} from 'react'
 import {createBrowserRouter} from 'react-router-dom'
 import {MainLayout} from "./Components/Layouts/MainLayout";
-import {backendUrl} from "./config";
+import {apiUrl} from "./config";
 
 const router = createBrowserRouter([
     {
@@ -27,7 +27,7 @@ export default function Sandbox() {
     const [name, setName] = useState("")
     const [product, setProduct] = useState({name: "Unknown"})
     useEffect(() => {
-        fetch(backendUrl + "api/products/" + 1)
+        fetch(apiUrl + "api/products/" + 1)
             .then(data => data.json())
             .then(product => {
                 setProduct(product)

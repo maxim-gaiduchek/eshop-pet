@@ -1,6 +1,15 @@
-export function postRequest(url, body) {
+export async function getRequest(url) {
+    return fetch(url, {
+        method: "GET",
+    })
+}
+
+export async function postRequest(url, body) {
     return fetch(url, {
         method: "POST",
-        body: body
+        body: JSON.stringify(body),
+        headers: {
+            "Content-Type": "application/json"
+        }
     })
 }
