@@ -120,12 +120,15 @@ export function ShopPage() {
             </Sider>
             <Flex style={{
                 height: "100%",
-                width: "100%",
+                width: "90%",
+                maxWidth: 1200,
+                margin: "0 auto",
                 justifyContent: "flex-start",
                 flexWrap: "wrap",
                 padding: "0 auto",
                 overflowY: "auto",
             }}>
+                <h1 style={{width: "100%"}}>Search</h1>
                 {
                     productPage.products.map((product) => {
                         return (

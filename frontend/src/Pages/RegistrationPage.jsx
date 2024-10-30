@@ -1,62 +1,83 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import {Button, Input} from "antd";
+import {Input} from "antd";
 import {MainLayout} from "../Components/Layouts/MainLayout";
 import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
-import createCustomer from "../Services/CustomerService";
+import {login} from "../Services/AuthService";
+import {SubmitButton} from "./Components/SubmitButton";
+import {createCustomer} from "../Services/CustomerService";
 
 export function RegistrationPage() {
     document.title = "Registration | E-Shop Pet";
+    const navigate = useNavigate();
     const [customerName, setCustomerName] = useState("");
     const [customerSurname, setCustomerSurname] = useState("");
     const [customerEmail, setCustomerEmail] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
     const [customerAddress, setCustomerAddress] = useState("");
     const [customerPassword, setCustomerPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const registerOnClick = async () => {
-        setLoading(true);
-        createCustomer(customerName, customerSurname, customerEmail, customerPhone, customerAddress, customerPassword)
-            .then(user => {
-                console.log(user);
-                localStorage.setItem("loginUserId", user.id);
+    const [disabled, setDisabled] = useState(false);
+    useEffect(() => {
+        let loginUserId = localStorage.getItem("loginUserId");
+        if (loginUserId) {
+            navigate("/shop");
+        }
+    }, []);
+    const loginAfterRegistration = async (e) => {
+        e.preventDefault();
+        setDisabled(true);
+        login(customerEmail, customerPassword)
+            .then(() => {
                 navigate("/shop");
             })
             .catch(() => {
-                setLoading(false);
+                setDisabled(false);
             });
+    }
+    const registerOnClick = async (e) => {
+        setDisabled(true);
+        createCustomer(customerName, customerSurname, customerEmail, customerPhone, customerAddress, customerPassword)
+            .then(() => loginAfterRegistration(e))
+            .catch(() => {
+                setDisabled(false);
+            });
+    }
+    const setupData = (value, setter) => {
+        setDisabled(!customerName || !customerSurname || !customerEmail || !customerPhone || !customerAddress || !customerPassword);
+        setter(value);
     }
     return (
         <MainLayout>
             <CenteredLayout>
-                <h1>Registration</h1>
-                <p>Already have an account? <Link to={"/login"}>Login</Link></p>
-                <Input type={"text"} placeholder={"Name"}
-                       value={customerName}
-                       onChange={(e) => setCustomerName(e.target.value)}
-                       style={{width: "100%"}}/>
-                <Input type={"text"} placeholder={"Surname"}
-                       value={customerSurname}
-                       onChange={(e) => setCustomerSurname(e.target.value)}
-                       style={{width: "100%"}}/>
-                <Input type={"email"} placeholder={"Email"}
-                       value={customerEmail}
-                       onChange={(e) => setCustomerEmail(e.target.value)}
-                       style={{width: "100%"}}/>
-                <Input type={"phone"} placeholder={"Phone"}
-                       value={customerPhone}
-                       onChange={(e) => setCustomerPhone(e.target.value)}
-                       style={{width: "100%"}}/>
-                <Input type={"text"} placeholder={"Address"}
-                       value={customerAddress}
-                       onChange={(e) => setCustomerAddress(e.target.value)}
-                       style={{width: "100%"}}/>
-                <Input type={"password"} placeholder={"Password"}
-                       value={customerPassword}
-                       onChange={(e) => setCustomerPassword(e.target.value)}
-                       style={{width: "100%"}}/>
-                <Button onClick={registerOnClick} disabled={loading} loading={loading}>Register</Button>
+                <form onSubmit={(e) => registerOnClick(e)} style={{textAlign: "center"}}>
+                    <h1>Registration</h1>
+                    <p>Already have an account? <Link to={"/login"}>Login</Link></p>
+                    <Input type={"text"} placeholder={"Name"}
+                           value={customerName}
+                           onChange={(e) => setupData(e.target.value, setCustomerName)}
+                           style={{width: "100%", margin: "10px 10px"}}/>
+                    <Input type={"text"} placeholder={"Surname"}
+                           value={customerSurname}
+                           onChange={(e) => setupData(e.target.value, setCustomerSurname)}
+                           style={{width: "100%", margin: "10px 10px"}}/>
+                    <Input type={"email"} placeholder={"Email"}
+                           value={customerEmail}
+                           onChange={(e) => setupData(e.target.value, setCustomerEmail)}
+                           style={{width: "100%", margin: "10px 10px"}}/>
+                    <Input type={"phone"} placeholder={"Phone"}
+                           value={customerPhone}
+                           onChange={(e) => setupData(e.target.value, setCustomerPhone)}
+                           style={{width: "100%", margin: "10px 10px"}}/>
+                    <Input type={"text"} placeholder={"Address"}
+                           value={customerAddress}
+                           onChange={(e) => setupData(e.target.value, setCustomerAddress)}
+                           style={{width: "100%", margin: "10px 10px"}}/>
+                    <Input type={"password"} placeholder={"Password"}
+                           value={customerPassword}
+                           onChange={(e) => setupData(e.target.value, setCustomerPassword)}
+                           style={{width: "100%", margin: "10px 10px"}}/>
+                    <SubmitButton disabled={disabled} value={"Register"}/>
+                </form>
             </CenteredLayout>
         </MainLayout>
     )

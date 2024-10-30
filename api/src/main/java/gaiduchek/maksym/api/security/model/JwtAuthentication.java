@@ -3,12 +3,11 @@ package gaiduchek.maksym.api.security.model;
 import gaiduchek.maksym.api.model.Role;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,12 +16,11 @@ public class JwtAuthentication implements Authentication {
     private boolean authenticated;
     private Long userId;
     private String login;
-    private String firstName;
-    private Set<Role> roles;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return List.of(role);
     }
 
     @Override
@@ -52,14 +50,13 @@ public class JwtAuthentication implements Authentication {
 
     @Override
     public String getName() {
-        return firstName;
+        return login;
     }
 
     public boolean hasRole(Role role) {
         if (role == null) {
             return false;
         }
-        return CollectionUtils.emptyIfNull(roles).stream()
-                .anyMatch(role::equals);
+        return role.equals(this.role);
     }
 }

@@ -29,8 +29,8 @@ public class UserAuth extends BaseEntity {
     private String password;
     @ElementCollection
     @CollectionTable(
-            name = "user_rerfresh_tokens", schema = "security",
-            joinColumns = @JoinColumn(name = "user_id")
+            name = "user_refresh_tokens", schema = "security",
+            joinColumns = @JoinColumn(name = "user_auth_id")
     )
     @Column(name = "user_refresh_token")
     private Set<String> refreshTokens;

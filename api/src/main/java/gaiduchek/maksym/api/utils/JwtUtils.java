@@ -1,31 +1,26 @@
 package gaiduchek.maksym.api.utils;
 
+import gaiduchek.maksym.api.constants.JwtClaimsConstants;
 import gaiduchek.maksym.api.model.Role;
 import gaiduchek.maksym.api.security.model.JwtAuthentication;
 import io.jsonwebtoken.Claims;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@UtilityClass
 public final class JwtUtils {
 
     public static JwtAuthentication generate(Claims claims) {
-        final JwtAuthentication jwtInfoToken = new JwtAuthentication();
-        jwtInfoToken.setRoles(getRoles(claims));
-        jwtInfoToken.setFirstName(claims.get("firstName", String.class));
-        jwtInfoToken.setLogin(claims.getSubject());
-        jwtInfoToken.setUserId(claims.get("userId", Integer.class).longValue());
-        return jwtInfoToken;
+        var jwtAuthentication = new JwtAuthentication();
+        var userId = claims.get(JwtClaimsConstants.USER_ID_KEY, Long.class);
+        var role = fetchRole(claims);
+        jwtAuthentication.setUserId(userId);
+        jwtAuthentication.setRole(role);
+        jwtAuthentication.setLogin(claims.getSubject());
+        return jwtAuthentication;
     }
 
-    private static Set<Role> getRoles(Claims claims) {
-        final List<String> roles = claims.get("roles", List.class);
-        return roles.stream()
-                .map(Role::valueOf)
-                .collect(Collectors.toSet());
+    private Role fetchRole(Claims claims) {
+        var role = claims.get(JwtClaimsConstants.USER_ROLE_KEY, String.class);
+        return Role.valueOf(role);
     }
 }

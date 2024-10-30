@@ -78,16 +78,16 @@ public class AuthServiceImpl implements AuthService {
         if (!jwtProvider.isRefreshTokenValid(refreshToken)) {
             throw new AccessException(AccessExceptionCodes.INVALID_JWT);
         }
-        final Claims claims = jwtProvider.getRefreshClaims(refreshToken);
-        final Long userId = claims.get(JwtClaimsConstants.USER_ID_KEY, Long.class);
+        var claims = jwtProvider.getRefreshClaims(refreshToken);
+        var userId = claims.get(JwtClaimsConstants.USER_ID_KEY, Long.class);
         var userAuth = userAuthService.getByUserIdOrThrow(userId);
         var user = userService.getByIdOtThrow(userId);
         var refreshTokens = userAuth.getRefreshTokens();
         if (refreshTokens == null || !refreshTokens.contains(refreshToken)) {
             throw new AccessException(AccessExceptionCodes.INVALID_JWT);
         }
-        final String accessToken = jwtProvider.generateAccessToken(userAuth, user);
-        final String newRefreshToken = jwtProvider.generateRefreshToken(userAuth);
+        var accessToken = jwtProvider.generateAccessToken(userAuth, user);
+        var newRefreshToken = jwtProvider.generateRefreshToken(userAuth);
         userAuth.getRefreshTokens().add(newRefreshToken);
         userAuthService.save(userAuth);
         return JwtResponse.builder()

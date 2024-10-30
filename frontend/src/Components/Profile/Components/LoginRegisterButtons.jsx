@@ -5,10 +5,10 @@ export function LoginRegisterButtons() {
     return (
         <Flex>
             <Link to={"/login"}>
-                <Button>Login</Button>
+                <Button style={{margin: "5px"}}>Login</Button>
             </Link>
             <Link to={"/register"}>
-                <Button>Register</Button>
+                <Button style={{margin: "5px"}}>Register</Button>
             </Link>
         </Flex>
     )

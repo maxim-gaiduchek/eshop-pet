@@ -5,6 +5,7 @@ import {LoginPage} from "../Pages/LoginPage";
 import {ProductPage} from '../Pages/ProductPage';
 import {MainLayout} from "../Components/Layouts/MainLayout";
 import {RegistrationPage} from "../Pages/RegistrationPage";
+import {UserPage} from "../Pages/UserPage";
 
 export const router = createBrowserRouter([
     {
@@ -24,9 +25,17 @@ export const router = createBrowserRouter([
         element: <RegistrationPage/>
     },
     {
-        path: "/product/:id",
-        element: <MainLayout>
-            <ProductPage/>
-        </MainLayout>
+        path: "/products/:id",
+        element:
+            <MainLayout>
+                <ProductPage/>
+            </MainLayout>
+    },
+    {
+        path: "/users/:id",
+        element:
+            <MainLayout>
+                <UserPage/>
+            </MainLayout>
     }
 ])

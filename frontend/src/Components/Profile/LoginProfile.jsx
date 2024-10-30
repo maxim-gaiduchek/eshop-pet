@@ -7,9 +7,8 @@ export function LoginProfile() {
         return (
             <LoginUserProfile/>
         )
-    } else {
-        return (
-            <LoginRegisterButtons/>
-        )
     }
+    return (
+        <LoginRegisterButtons/>
+    )
 }

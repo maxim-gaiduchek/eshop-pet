@@ -9,7 +9,6 @@ import java.util.Arrays;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpMethod.PUT;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,7 +16,7 @@ public enum UnsecuredEndpoint {
 
     GET_ALL("/security/.*", GET),
     POST_ALL("/security/.*", POST),
-    PUT_CREDENTIALS("/security/credentials", PUT),
+    POST_CREDENTIALS("/security/internal/credentials", POST),
     ;
 
     private final String urlPattern;

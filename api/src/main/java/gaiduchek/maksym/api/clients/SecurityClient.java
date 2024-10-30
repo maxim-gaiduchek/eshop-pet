@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @FeignClient(url = "${feign.security.url}", name = "api-service", configuration = InternalFeignConfiguration.class)
 public interface SecurityClient {
 
-    @PostMapping("/credentials")
+    @PostMapping("/internal/credentials")
     void createCredentials(@RequestBody UserCredentialsDto userCredentialsDto);
 }

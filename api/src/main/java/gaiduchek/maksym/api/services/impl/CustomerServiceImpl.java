@@ -11,6 +11,7 @@ import gaiduchek.maksym.api.repository.CustomerRepository;
 import gaiduchek.maksym.api.security.services.interfaces.AuthService;
 import gaiduchek.maksym.api.services.interfaces.CustomerService;
 import gaiduchek.maksym.api.utils.HashUtils;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,12 +37,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    @Transactional
     public Customer create(CustomerDto customerDto) {
         checkCreationPossibility(customerDto);
         var customer = customerMapper.toEntity(customerDto);
         customer.setRole(Role.ROLE_CUSTOMER);
+        var savedCustomer = customerRepository.save(customer);
         authService.createCredentials(customer.getId(), customerDto.getPassword());
-        return customerRepository.save(customer);
+        return savedCustomer;
     }
 
     private void checkCreationPossibility(CustomerDto customerDto) {

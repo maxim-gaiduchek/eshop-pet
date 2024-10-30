@@ -23,6 +23,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @GetMapping("/{id}")
+    @PreAuthorize("@accessService.isUserThemself(#id) or @accessService.isWorker()")
     public UserDto get(@PathVariable Long id) {
         var user = userService.getByIdOrThrow(id);
         return userMapper.toDto(user);

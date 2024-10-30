@@ -13,6 +13,7 @@ import java.util.List;
 public class JwtAuthentication implements Authentication {
 
     private boolean authenticated;
+    private Long userId;
     private String login;
     private Role role;
 

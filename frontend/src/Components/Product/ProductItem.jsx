@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 
 export function ProductItem({product}) {
     return (
-        <Link to={"/product/" + product.id}>
+        <Link to={"/products/" + product.id}>
             <Card title={product.name}
                   hoverable={true}
                   cover={

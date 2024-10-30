@@ -28,14 +28,11 @@ public class CookieUtils {
         httpResponse.addCookie(cookie);
     }
 
-    public static ResponseCookie createHttpOnlyCookie(String name, String value, String path, int maxAge) {
-        return ResponseCookie
-                .from(name, value)
-                .secure(true)
-                .httpOnly(true)
-                .path("/")
-                .maxAge(maxAge)
-                .sameSite("None")
-                .build();
+    public static Cookie createHttpOnlyCookie(String name, String value, String path, int maxAge) {
+        var cookie = new Cookie(name, value);
+        cookie.setPath(path);
+        cookie.setMaxAge(maxAge);
+        cookie.setHttpOnly(true);
+        return cookie;
     }
 }
