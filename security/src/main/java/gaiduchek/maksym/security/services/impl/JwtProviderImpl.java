@@ -19,12 +19,16 @@ import javax.crypto.SecretKey;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 @Slf4j
 @Service
 public class JwtProviderImpl implements JwtProvider {
+
+    @Value("${jwt.cookie.age.access}")
+    private int accessTokenAge;
+    @Value("${jwt.cookie.age.refresh}")
+    private int refreshTokenAge;
 
     private final SecretKey jwtAccessSecret;
     private final SecretKey jwtRefreshSecret;
@@ -40,7 +44,7 @@ public class JwtProviderImpl implements JwtProvider {
     @Override
     public String generateAccessToken(UserAuth userAuth, UserDto user) {
         var now = LocalDateTime.now();
-        var expirationInstant = now.plusSeconds(30).atZone(ZoneId.systemDefault()).toInstant();
+        var expirationInstant = now.plusSeconds(accessTokenAge).atZone(ZoneId.systemDefault()).toInstant();
         var expiration = Date.from(expirationInstant);
         return Jwts.builder()
                 .setSubject(userAuth.getId().toString())
@@ -57,7 +61,7 @@ public class JwtProviderImpl implements JwtProvider {
     @Override
     public String generateRefreshToken(UserAuth userAuth) {
         var now = LocalDateTime.now();
-        var expirationInstant = now.plusMinutes(5).atZone(ZoneId.systemDefault()).toInstant();
+        var expirationInstant = now.plusSeconds(refreshTokenAge).atZone(ZoneId.systemDefault()).toInstant();
         var expiration = Date.from(expirationInstant);
         return Jwts.builder()
                 .setSubject(userAuth.getId().toString())

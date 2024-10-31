@@ -61,6 +61,7 @@ function handleResponse(response, jsonResponse, onTokenExpiration) {
 export async function getRequest(url, jsonResponse = true) {
     return fetch(url, {
         method: "GET",
+        credentials: "include",
         headers: buildHeaders(),
     })
         .then(response => {
@@ -74,6 +75,7 @@ export async function postRequest(url, body, jsonResponse = true) {
     return fetch(url, {
         method: "POST",
         body: JSON.stringify(body),
+        credentials: "include",
         headers: headers,
     })
         .then(response => {
