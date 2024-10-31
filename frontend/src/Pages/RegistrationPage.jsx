@@ -16,7 +16,7 @@ export function RegistrationPage() {
     const [customerPhone, setCustomerPhone] = useState("");
     const [customerAddress, setCustomerAddress] = useState("");
     const [customerPassword, setCustomerPassword] = useState("");
-    const [disabled, setDisabled] = useState(false);
+    const [disabled, setDisabled] = useState(true);
     useEffect(() => {
         let loginUserId = localStorage.getItem("loginUserId");
         if (loginUserId) {
