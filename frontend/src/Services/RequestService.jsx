@@ -10,7 +10,7 @@ function handleError(response) {
 
 function throwError(json) {
     console.error(`Error with code ${json.code}: ${json.description}`);
-    toast(`Error with code ${json.code}: ${json.description}`);
+    toast.error(`Error with code ${json.code}: ${json.description}`);
     throw new Error(`Error with code ${json.code}: ${json.description}`);
 }
 

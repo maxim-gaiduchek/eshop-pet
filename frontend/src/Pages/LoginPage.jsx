@@ -15,7 +15,7 @@ export function LoginPage() {
     useEffect(() => {
         let loginUserId = localStorage.getItem("loginUserId");
         if (loginUserId) {
-            // navigate("/shop");
+            navigate("/shop");
         }
     }, []);
     const loginOnClick = async (e) => {
@@ -23,8 +23,8 @@ export function LoginPage() {
         setDisabled(true);
         login(userLogin, userPassword)
             .then(() => {
-                // navigate("/shop");
-                setDisabled(false);
+                navigate("/shop");
+                // setDisabled(false);
             })
             .catch(() => {
                 setDisabled(false);
