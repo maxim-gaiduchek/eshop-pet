@@ -6,6 +6,7 @@ import {ProductPage} from '../Pages/ProductPage';
 import {MainLayout} from "../Components/Layouts/MainLayout";
 import {RegistrationPage} from "../Pages/RegistrationPage";
 import {UserPage} from "../Pages/UserPage";
+import {SellersPage} from "../Pages/SellersPage";
 
 export const router = createBrowserRouter([
     {
@@ -37,5 +38,9 @@ export const router = createBrowserRouter([
             <MainLayout>
                 <UserPage/>
             </MainLayout>
+    },
+    {
+        path: "/sellers",
+        element: <SellersPage/>
     }
 ])

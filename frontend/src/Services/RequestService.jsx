@@ -17,9 +17,10 @@ function throwError(json) {
 function handleTokenExpiration() {
     return fetch(securityUrl + "/refresh", {
         method: "GET",
+        credentials: "include",
     })
         .then(refreshResponse => {
-            console.log(refreshResponse)
+            console.log(refreshResponse);
             if (refreshResponse.ok) {
                 return refreshResponse.json();
             }
@@ -41,6 +42,7 @@ function buildHeaders() {
     const accessToken = localStorage.getItem("loginAccessToken");
     if (accessToken) {
         headers.set("Authorization", tokenType + " " + accessToken);
+        // headers.set("Cookies", document.cookies);
     }
     return headers;
 }

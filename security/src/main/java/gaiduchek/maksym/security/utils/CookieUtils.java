@@ -3,6 +3,7 @@ package gaiduchek.maksym.security.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.experimental.UtilityClass;
+import org.springframework.http.ResponseCookie;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -27,13 +28,13 @@ public class CookieUtils {
         httpResponse.addCookie(cookie);
     }
 
-    public Cookie createHttpOnlyCookie(String name, String value, String path, int maxAge) {
-        var cookie = new Cookie(name, value);
-        cookie.setMaxAge(maxAge);
-        cookie.setPath(path);
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setAttribute("SameSite", "None");
-        return cookie;
+    public ResponseCookie createCookie(String name, String value, String path, int maxAge) {
+        return ResponseCookie.from(name, value)
+                .httpOnly(true)
+                .secure(true)
+                .path(path)
+                .maxAge(maxAge)
+                .sameSite("None")
+                .build();
     }
 }

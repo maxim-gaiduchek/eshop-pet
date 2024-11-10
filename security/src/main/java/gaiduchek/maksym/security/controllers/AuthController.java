@@ -14,6 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,12 +44,12 @@ public class AuthController {
                              HttpServletResponse httpResponse) {
         var jwtResponse = authService.login(authRequest);
         var newRefreshTokenCookie = createRefreshTokenCookie(jwtResponse.getRefreshToken());
-        httpResponse.addCookie(newRefreshTokenCookie);
+        httpResponse.addHeader(HttpHeaders.SET_COOKIE, newRefreshTokenCookie.toString());
         return jwtResponse;
     }
 
-    private Cookie createRefreshTokenCookie(String refreshToken) {
-        return CookieUtils.createHttpOnlyCookie(
+    private ResponseCookie createRefreshTokenCookie(String refreshToken) {
+        return CookieUtils.createCookie(
                 REFRESH_TOKEN_COOKIE_NAME, refreshToken, "/", refreshTokenAge);
     }
 
@@ -78,7 +80,7 @@ public class AuthController {
                 .orElse(null);
         var jwtResponse = authService.refresh(refreshToken);
         var newRefreshTokenCookie = createRefreshTokenCookie(jwtResponse.getRefreshToken());
-        httpResponse.addCookie(newRefreshTokenCookie);
+        httpResponse.addHeader(HttpHeaders.SET_COOKIE, newRefreshTokenCookie.toString());
         return jwtResponse;
     }
 
