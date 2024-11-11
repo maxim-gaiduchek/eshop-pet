@@ -2,11 +2,13 @@ import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getCompany} from "../Services/CompanyService";
 import {MainLayout} from "../Components/Layouts/MainLayout";
-import {AdministratorSider} from "../Components/Administrator/AdministratorSider";
 import {Button, Flex, Table} from "antd";
 import {getProducts} from "../Services/ProductService";
 import {LinkOutlined} from "@ant-design/icons";
 import {mockCompany, mockProducts} from "../mock";
+import Sider from "antd/lib/layout/Sider";
+import {secondaryBackgroundColor} from "../colors";
+import {MenuButtons} from "../Components/Sider/MenuButtons";
 
 const productColumns = [
     {
@@ -115,7 +117,14 @@ export function CompanyPage() {
     }, [company, page, pageSize]);
     return (
         <MainLayout>
-            <AdministratorSider/>
+            <Sider style={{
+                height: "100%",
+                backgroundColor: secondaryBackgroundColor,
+                overflowY: "hidden",
+                alignItems: "center",
+            }}>
+                <MenuButtons/>
+            </Sider>
             <Flex style={{
                 height: "100%",
                 width: "90%",

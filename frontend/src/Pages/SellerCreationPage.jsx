@@ -6,7 +6,9 @@ import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
 import {useState} from "react";
 import {createSeller} from "../Services/SellerService";
 import {toast} from "react-toastify";
-import {AdministratorSider} from "../Components/Administrator/AdministratorSider";
+import Sider from "antd/lib/layout/Sider";
+import {secondaryBackgroundColor} from "../colors";
+import {MenuButtons} from "../Components/Sider/MenuButtons";
 
 export function SellerCreationPage() {
     document.title = "New seller | Administrator | E-Shop Pet";
@@ -36,7 +38,14 @@ export function SellerCreationPage() {
     }
     return (
         <MainLayout>
-            <AdministratorSider/>
+            <Sider style={{
+                height: "100%",
+                backgroundColor: secondaryBackgroundColor,
+                overflowY: "hidden",
+                alignItems: "center",
+            }}>
+                <MenuButtons/>
+            </Sider>
             <CenteredLayout>
                 <form onSubmit={(e) => createOnClick(e)} style={{textAlign: "center"}}>
                     <h1>New seller</h1>

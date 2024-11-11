@@ -1,6 +1,5 @@
 import {getRequest, postRequest} from "./RequestService";
 import {apiUrl} from "../config";
-import {sha256} from "js-sha256";
 
 export async function getProduct(id) {
     return getRequest(apiUrl + "/products/" + id)

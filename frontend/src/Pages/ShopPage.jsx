@@ -6,6 +6,7 @@ import {Flex, Pagination} from "antd"
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
 import {mockProducts} from "../mock";
+import {MenuButtons} from "../Components/Sider/MenuButtons";
 
 export function ShopPage() {
     document.title = "Products | E-Shop Pet";
@@ -46,7 +47,8 @@ export function ShopPage() {
                 backgroundColor: secondaryBackgroundColor,
                 overflowY: "hidden",
             }}>
-                <p>Filters: </p>
+                <MenuButtons/>
+                <h3>Filters: </h3>
             </Sider>
             <Flex style={{
                 height: "100%",

@@ -10,6 +10,7 @@ export async function login(login, password) {
         .then(credentials => {
             console.log(credentials)
             localStorage.setItem("loginUserId", credentials.userId);
+            localStorage.setItem("loginUserRole", credentials.role);
             localStorage.setItem("loginAccessToken", credentials.accessToken);
             localStorage.setItem("loginTokenType", credentials.type);
         })
@@ -19,6 +20,7 @@ export async function logout() {
     return getRequest(securityUrl + "/logout", false)
         .then(() => {
             localStorage.removeItem("loginUserId");
+            localStorage.removeItem("loginUserRole");
             localStorage.removeItem("loginAccessToken");
             localStorage.removeItem("loginTokenType");
         })

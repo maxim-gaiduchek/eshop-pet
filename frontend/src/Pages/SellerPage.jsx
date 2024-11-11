@@ -1,33 +1,37 @@
-import {MainLayout} from "../Components/Layouts/MainLayout";
-import {Button, Flex, Table} from "antd";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {Flex, Table} from "antd";
+import {MainLayout} from "../Components/Layouts/MainLayout";
+import {mockCompanies, mockSeller} from "../mock";
+import {MailOutlined} from "@ant-design/icons";
 import {getCompanies} from "../Services/CompanyService";
-import {mockCompanies} from "../mock";
 import {companyColumns} from "../table_columns";
+import {getSeller} from "../Services/SellerService";
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
 import {MenuButtons} from "../Components/Sider/MenuButtons";
 
-export function CompaniesPage() {
-    document.title = "Companies | E-Shop Pet"
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const pageParam = urlParams.get("page");
-    const pageSizeParam = urlParams.get("pageSize");
-    // const [companies, setCompanies] = useState(mockCompanies);
+export function SellerPage() {
+    document.title = "Seller | E-Shop Pet";
+    const {id} = useParams();
+    const [seller, setSeller] = useState(mockSeller);
     const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(pageParam ? +pageParam : 1);
-    const [pageSize, setPageSize] = useState(pageSizeParam ? +pageSizeParam : 10);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
     const [total, setTotal] = useState(companies.length);
-    const userId = localStorage.getItem("loginUserId");
-    const role = localStorage.getItem("loginUserRole");
-    const sellerIds = role && role === "ROLE_SELLER" ? [userId] : []
+    useEffect(() => {
+        getSeller(id)
+            .then(seller => {
+                setSeller(seller);
+                document.title = `${seller.name} ${seller.surname} | Seller | E-Shop Pet`;
+            })
+            .catch(() => setSeller(mockSeller))
+    }, []);
     const fetchCompanies = () => {
         setLoading(true);
         getCompanies(page, pageSize, {
-            sellerIds: sellerIds,
+            sellerIds: [id],
         })
             .then(companyPage => {
                 setLoading(false);
@@ -35,12 +39,6 @@ export function CompaniesPage() {
                 setPage(companyPage.currentPage);
                 setTotal(companyPage.totalMatches);
             })
-            /*.then(() => {
-                setCompanies(mockCompanies);
-                setPage(1);
-                setPageSize(10);
-                setTotal(mockCompanies.length);
-            })*/
             .catch(() => {
                 setLoading(false);
                 setCompanies(mockCompanies);
@@ -70,21 +68,24 @@ export function CompaniesPage() {
                 maxWidth: 1200,
                 margin: "0 auto",
                 justifyContent: "flex-start",
-                flexWrap: "wrap",
                 padding: "0 auto",
                 overflowY: "auto",
                 alignItems: "center",
-                flexDirection: "column"
+                flexDirection: "column",
             }}>
                 <Flex style={{
                     width: "100%",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                    flexDirection: "column",
+                }}>
+                    <h1>{seller.name} {seller.surname}</h1>
+                    <p>Phone: {seller.phone}</p>
+                    <p>Email: <Link to={"mailto:" + seller.email}>{seller.email} <MailOutlined/></Link></p>
+                    <p>Address: {seller.address}</p>
+                </Flex>
+                <Flex style={{
+                    width: "100%",
                 }}>
                     <h1>Companies</h1>
-                    <Link to={"/companies/new"}>
-                        <Button>Add company</Button>
-                    </Link>
                 </Flex>
                 <Table
                     dataSource={companies}
@@ -99,6 +100,7 @@ export function CompaniesPage() {
                     style={{
                         width: "100%",
                         overflowX: "auto",
+                        overflowY: "auto",
                     }}
                 />
             </Flex>

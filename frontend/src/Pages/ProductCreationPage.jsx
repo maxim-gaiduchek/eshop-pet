@@ -4,12 +4,14 @@ import {Input, InputNumber, Select} from "antd";
 import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import {AdministratorSider} from "../Components/Administrator/AdministratorSider";
 import {createProducts} from "../Services/ProductService";
 import TextArea from "antd/lib/input/TextArea";
 import {SubmitButton} from "../Components/Buttons/SubmitButton";
 import {mockCompanies} from "../mock";
 import {getCompanies} from "../Services/CompanyService";
+import Sider from "antd/lib/layout/Sider";
+import {secondaryBackgroundColor} from "../colors";
+import {MenuButtons} from "../Components/Sider/MenuButtons";
 
 export function ProductCreationPage() {
     document.title = "New product | Seller | E-Shop Pet";
@@ -50,7 +52,14 @@ export function ProductCreationPage() {
     }, []);
     return (
         <MainLayout>
-            <AdministratorSider/>
+            <Sider style={{
+                height: "100%",
+                backgroundColor: secondaryBackgroundColor,
+                overflowY: "hidden",
+                alignItems: "center",
+            }}>
+                <MenuButtons/>
+            </Sider>
             <CenteredLayout>
                 <form onSubmit={(e) => createOnClick(e)} style={{textAlign: "center"}}>
                     <h1>New product</h1>

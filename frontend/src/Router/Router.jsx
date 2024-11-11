@@ -5,13 +5,14 @@ import {LoginPage} from "../Pages/LoginPage";
 import {ProductPage} from '../Pages/ProductPage';
 import {MainLayout} from "../Components/Layouts/MainLayout";
 import {RegistrationPage} from "../Pages/RegistrationPage";
-import {UserPage} from "../Pages/UserPage";
+import {CustomerPage} from "../Pages/CustomerPage";
 import {SellersPage} from "../Pages/SellersPage";
 import {SellerCreationPage} from "../Pages/SellerCreationPage";
 import {CompaniesPage} from "../Pages/CompaniesPage";
 import {CompanyCreationPage} from "../Pages/CompanyCreationPage";
 import {CompanyPage} from "../Pages/CompanyPage";
 import {ProductCreationPage} from "../Pages/ProductCreationPage";
+import {SellerPage} from "../Pages/SellerPage";
 
 export const router = createBrowserRouter([
     {
@@ -43,10 +44,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/users/:id",
-        element:
-            <MainLayout>
-                <UserPage/>
-            </MainLayout>
+        element: <CustomerPage/>
     },
     {
         path: "/sellers",
@@ -58,10 +56,7 @@ export const router = createBrowserRouter([
     },
     {
         path: "/sellers/:id",
-        element:
-            <MainLayout>
-                <UserPage/> {/* TODO */}
-            </MainLayout>
+        element: <SellerPage/>
     },
     {
         path: "/companies",

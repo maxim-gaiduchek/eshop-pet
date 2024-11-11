@@ -25,12 +25,14 @@ function handleTokenExpiration() {
                 return refreshResponse.json();
             }
             localStorage.removeItem("loginUserId");
+            localStorage.removeItem("loginUserRole");
             localStorage.removeItem("loginAccessToken");
             localStorage.removeItem("loginTokenType");
             return handleError(refreshResponse);
         })
         .then(credentials => {
             localStorage.getItem("loginUserId", credentials.userId);
+            localStorage.getItem("loginUserRole", credentials.role);
             localStorage.getItem("loginAccessToken", credentials.accessToken);
             localStorage.setItem("loginTokenType", credentials.type);
         })
@@ -75,8 +77,12 @@ function buildQueryParams(queryParams) {
     if (!queryParams) {
         return "";
     }
+    const entries = Object.entries(queryParams);
+    if (!entries || entries.length === 0) {
+        return "";
+    }
     const urlParams = new URLSearchParams();
-    for (const [key, value] of Object.entries(queryParams)) {
+    for (const [key, value] of entries) {
         urlParams.set(key, value);
     }
     return "?" + urlParams.toString();

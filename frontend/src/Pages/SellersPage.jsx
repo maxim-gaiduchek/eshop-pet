@@ -4,8 +4,10 @@ import {Link} from "react-router-dom";
 import {LinkOutlined, MailOutlined} from "@ant-design/icons";
 import {useEffect, useState} from "react";
 import {getSellers} from "../Services/SellerService";
-import {AdministratorSider} from "../Components/Administrator/AdministratorSider";
 import {mockSellers} from "../mock";
+import Sider from "antd/lib/layout/Sider";
+import {secondaryBackgroundColor} from "../colors";
+import {MenuButtons} from "../Components/Sider/MenuButtons";
 
 const columns = [
     {
@@ -117,7 +119,14 @@ export function SellersPage() {
     }, [page, pageSize]);
     return (
         <MainLayout>
-            <AdministratorSider/>
+            <Sider style={{
+                height: "100%",
+                backgroundColor: secondaryBackgroundColor,
+                overflowY: "hidden",
+                alignItems: "center",
+            }}>
+                <MenuButtons/>
+            </Sider>
             <Flex style={{
                 height: "100%",
                 width: "90%",

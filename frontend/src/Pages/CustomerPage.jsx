@@ -1,58 +1,59 @@
-import {MainLayout} from "../Components/Layouts/MainLayout";
-import {Button, Flex, Table} from "antd";
-import {Link} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getCompanies} from "../Services/CompanyService";
-import {mockCompanies} from "../mock";
+import {Flex, Table} from "antd";
+import {MainLayout} from "../Components/Layouts/MainLayout";
+import {mockSeller} from "../mock";
+import {MailOutlined} from "@ant-design/icons";
 import {companyColumns} from "../table_columns";
-import Sider from "antd/lib/layout/Sider";
-import {secondaryBackgroundColor} from "../colors";
+import {getUser} from "../Services/UserService";
 import {MenuButtons} from "../Components/Sider/MenuButtons";
+import {secondaryBackgroundColor} from "../colors";
+import Sider from "antd/lib/layout/Sider";
 
-export function CompaniesPage() {
-    document.title = "Companies | E-Shop Pet"
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const pageParam = urlParams.get("page");
-    const pageSizeParam = urlParams.get("pageSize");
-    // const [companies, setCompanies] = useState(mockCompanies);
-    const [companies, setCompanies] = useState([]);
+export function CustomerPage() {
+    document.title = "User Account | E-Shop Pet";
+    const {id} = useParams();
+    const [customer, setCustomer] = useState(mockSeller);
+    const navigate = useNavigate();
+    const [purchases, setPurchases] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [page, setPage] = useState(pageParam ? +pageParam : 1);
-    const [pageSize, setPageSize] = useState(pageSizeParam ? +pageSizeParam : 10);
-    const [total, setTotal] = useState(companies.length);
-    const userId = localStorage.getItem("loginUserId");
-    const role = localStorage.getItem("loginUserRole");
-    const sellerIds = role && role === "ROLE_SELLER" ? [userId] : []
-    const fetchCompanies = () => {
-        setLoading(true);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(purchases.length);
+    useEffect(() => {
+        getUser(id)
+            .then(customer => {
+                if (customer.role === "ROLE_SELLER") {
+                    navigate("/sellers/" + customer.id)
+                }
+                setCustomer(customer);
+                document.title = `${customer.name} ${customer.surname} | User Account | E-Shop Pet`;
+            })
+            .catch(() => setCustomer(mockSeller))
+    }, []);
+    const fetchPurchases = () => {
+        /*setLoading(true);
         getCompanies(page, pageSize, {
-            sellerIds: sellerIds,
+            sellerIds: [id],
         })
             .then(companyPage => {
                 setLoading(false);
-                setCompanies(companyPage.companies);
+                setPurchases(companyPage.companies);
                 setPage(companyPage.currentPage);
                 setTotal(companyPage.totalMatches);
             })
-            /*.then(() => {
-                setCompanies(mockCompanies);
-                setPage(1);
-                setPageSize(10);
-                setTotal(mockCompanies.length);
-            })*/
             .catch(() => {
                 setLoading(false);
-                setCompanies(mockCompanies);
+                setPurchases(mockCompanies);
                 setPage(1);
-            })
+            })*/
     }
     const onTablePaginationChange = (page, pageSize) => {
         setPage(page);
         setPageSize(pageSize);
     };
     useEffect(() => {
-        fetchCompanies();
+        fetchPurchases();
     }, [page, pageSize]);
     return (
         <MainLayout>
@@ -70,24 +71,26 @@ export function CompaniesPage() {
                 maxWidth: 1200,
                 margin: "0 auto",
                 justifyContent: "flex-start",
-                flexWrap: "wrap",
                 padding: "0 auto",
                 overflowY: "auto",
                 alignItems: "center",
-                flexDirection: "column"
+                flexDirection: "column",
             }}>
                 <Flex style={{
                     width: "100%",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                    flexDirection: "column",
                 }}>
-                    <h1>Companies</h1>
-                    <Link to={"/companies/new"}>
-                        <Button>Add company</Button>
-                    </Link>
+                    <h1>{customer.name} {customer.surname}</h1>
+                    <p>Phone: {customer.phone}</p>
+                    <p>Email: <Link to={"mailto:" + customer.email}>{customer.email} <MailOutlined/></Link></p>
+                </Flex>
+                <Flex style={{
+                    width: "100%",
+                }}>
+                    <h1>Purchases</h1>
                 </Flex>
                 <Table
-                    dataSource={companies}
+                    dataSource={[]}
                     columns={companyColumns}
                     pagination={{
                         pageSize: pageSize,
@@ -99,6 +102,7 @@ export function CompaniesPage() {
                     style={{
                         width: "100%",
                         overflowX: "auto",
+                        overflowY: "auto",
                     }}
                 />
             </Flex>
