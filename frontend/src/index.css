@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.submitButton {
+    padding: 10px;
+    border: 0.7px solid #d9d9d9;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: white;
+}
+
+.submitButton:hover {
+    border-color: #1677ff;
+}
+
+.productImage {
+    width: 100%;
+    min-height: 500px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #d9d9d9;
+}
+
+.productTitle {
+    font-size: 24px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+.productDetails {
+    font-size: 14px;
+    color: gray;
+    margin-bottom: 10px;
+}
+
+.commentHeader {
+    width: 100%;
+    height: 60px;
+}
+
+.commentPhoto {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    float: left;
+    margin-right: 20px;
+    background-size: cover;
+    background-position: center;
+}
+
+.commentTitle {
+    font-size: 18px;
+    float: left;
+    font-weight: 700;
+}
+
+.commentsContainer h4 {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.comment {
+    width: 100%;
+    border-radius: 5px;
+    border: 0.7px solid #d9d9d9;
+    padding: 20px;
+    margin-bottom: 40px;
+}
+
+.commentFooter {
+    font-size: 14px;
+    color: gray;
+    margin-top: 20px;
+}
+
+.reviewContainer {
+    margin-bottom: 20px;
+}

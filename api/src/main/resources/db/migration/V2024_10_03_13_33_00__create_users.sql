@@ -50,26 +50,3 @@ alter table sellers
     add constraint FK_seller_user
         foreign key (user_id)
             references users;
-
-/*
--- For security service
-
-create table if not exists user_auths
-(
-    id          serial       not null primary key,
-    created_at  timestamp,
-    updated_at  timestamp,
-
-    user_id integer not null ,
-    password    varchar(255) not null
-);
-
-create table if not exists user_refresh_tokens
-(
-    id          serial       not null primary key,
-    created_at  timestamp,
-    updated_at  timestamp,
-
-    user_id integer not null ,
-    password    varchar(255) not null
-);*/

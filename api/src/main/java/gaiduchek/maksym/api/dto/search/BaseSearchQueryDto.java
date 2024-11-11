@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,6 +15,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class BaseSearchQueryDto {
 
+    private List<Long> ids;
     private String createdAtMin;
     private String createdAtMax;
     private Integer page = 1;

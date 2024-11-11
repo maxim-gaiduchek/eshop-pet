@@ -19,7 +19,6 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +49,7 @@ public class AuthController {
     }
 
     private ResponseCookie createRefreshTokenCookie(String refreshToken) {
-        return CookieUtils.createHttpOnlyCookie(
+        return CookieUtils.createCookie(
                 REFRESH_TOKEN_COOKIE_NAME, refreshToken, "/", refreshTokenAge);
     }
 
@@ -85,7 +84,7 @@ public class AuthController {
         return jwtResponse;
     }
 
-    @PutMapping("/credentials")
+    @PostMapping("/internal/credentials")
     @PreAuthorize("@accessService.checkTechnicalEndpoint(#apiKey)")
     public void updateCredentials(@RequestBody UserCredentialsDto credentials,
                                   @RequestHeader(value = X_API_KEY, required = false) String apiKey) {

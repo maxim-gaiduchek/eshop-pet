@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +32,7 @@ import java.util.Map;
 @SuperBuilder(builderMethodName = "baseBuilder")
 public class BaseFilter<T extends BaseEntity> {
 
+    protected List<Long> ids;
     protected String createdAtMinDate;
     protected String createdAtMaxDate;
     @Builder.Default
@@ -52,6 +54,10 @@ public class BaseFilter<T extends BaseEntity> {
     protected List<Predicate> getSpecificationPredicates(Root<T> root, CriteriaQuery<?> query,
                                                          CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
+
+        if (CollectionUtils.isNotEmpty(ids)) {
+            predicates.add(root.get("id").in(ids));
+        }
 
         if (StringUtils.isNoneEmpty(createdAtMinDate)) {
             var startDay = DateTimeUtils.convertDateStartDay(createdAtMinDate);

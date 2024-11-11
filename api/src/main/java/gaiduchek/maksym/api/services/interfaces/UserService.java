@@ -11,4 +11,8 @@ public interface UserService {
     User getByIdOrThrow(Long id);
 
     User getByEmailOrThrow(String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
 }

@@ -1,8 +1,10 @@
 package gaiduchek.maksym.api.services.impl;
 
 import gaiduchek.maksym.api.dto.products.CompanyDto;
+import gaiduchek.maksym.api.dto.search.SearchCompanyDto;
 import gaiduchek.maksym.api.exceptions.EntityNotFoundException;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.CompanyExceptionCodes;
+import gaiduchek.maksym.api.filters.CompanyFilter;
 import gaiduchek.maksym.api.mappers.CompanyMapper;
 import gaiduchek.maksym.api.model.Company;
 import gaiduchek.maksym.api.repository.CompanyRepository;
@@ -36,6 +38,23 @@ public class CompanyServiceImpl implements CompanyService {
     public Company getByIdOrThrow(Long id) {
         return findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(CompanyExceptionCodes.COMPANY_DOES_NOT_EXIST, id));
+    }
+
+    @Override
+    public SearchCompanyDto find(CompanyFilter filter) {
+        if (filter == null) {
+            return null;
+        }
+        var specification = filter.buildSpecification();
+        var pageable = filter.buildPageable();
+        var companies = companyRepository.findAll(specification, pageable);
+        var companyDtos = companyMapper.toDtos(companies.getContent());
+        return SearchCompanyDto.builder()
+                .companies(companyDtos)
+                .currentPage(pageable.getPageNumber() + 1)
+                .totalPages(companies.getTotalPages())
+                .totalMatches(companies.getTotalElements())
+                .build();
     }
 
     @Override

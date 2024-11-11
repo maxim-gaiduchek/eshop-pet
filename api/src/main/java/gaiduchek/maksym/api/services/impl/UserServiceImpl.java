@@ -32,4 +32,14 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException(UserExceptionCodes.USER_DOES_NOT_EXIST));
     }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean existsByEmailAndIdNot(String email, Long id) {
+        return userRepository.existsByEmailAndIdNot(email, id);
+    }
 }

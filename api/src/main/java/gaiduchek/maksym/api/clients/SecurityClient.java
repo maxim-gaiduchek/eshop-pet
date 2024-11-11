@@ -6,9 +6,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(url = "${feign.api.url}", name = "api-service", configuration = InternalFeignConfiguration.class)
+@FeignClient(url = "${feign.security.url}", name = "api-service", configuration = InternalFeignConfiguration.class)
 public interface SecurityClient {
 
-    @PostMapping("/credentials")
+    @PostMapping("/internal/credentials")
     void createCredentials(@RequestBody UserCredentialsDto userCredentialsDto);
 }

@@ -29,9 +29,9 @@ public class JwtFilter extends OncePerRequestFilter {
     public void doFilterInternal(@NonNull HttpServletRequest request,
                                  @NonNull HttpServletResponse response,
                                  @NonNull FilterChain filterChain) throws IOException, ServletException {
-        final String token = getTokenFromRequest(request);
+        var token = getTokenFromRequest(request);
         if (token != null && jwtProvider.isAccessTokenValid(token)) {
-            final Claims claims = jwtProvider.getAccessClaims(token);
+            var claims = jwtProvider.getAccessClaims(token);
             var jwtAuthentication = JwtUtils.generate(claims);
             jwtAuthentication.setAuthenticated(true);
             SecurityContextHolder.getContext().setAuthentication(jwtAuthentication);

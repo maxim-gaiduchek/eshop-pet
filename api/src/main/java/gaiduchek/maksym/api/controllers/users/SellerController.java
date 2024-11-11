@@ -1,5 +1,7 @@
 package gaiduchek.maksym.api.controllers.users;
 
+import gaiduchek.maksym.api.dto.search.SearchSellerDto;
+import gaiduchek.maksym.api.dto.search.SearchSellerQueryDto;
 import gaiduchek.maksym.api.dto.users.SellerDto;
 import gaiduchek.maksym.api.mappers.SellerMapper;
 import gaiduchek.maksym.api.services.interfaces.SellerService;
@@ -7,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +29,12 @@ public class SellerController {
     public SellerDto get(@PathVariable Long id) {
         var seller = sellerService.getByIdOrThrow(id);
         return sellerMapper.toDto(seller);
+    }
+
+    @GetMapping
+    public SearchSellerDto findAll(@ModelAttribute SearchSellerQueryDto queryDto) {
+        var filter = sellerMapper.queryToFilter(queryDto);
+        return sellerService.find(filter);
     }
 
     @PostMapping

@@ -24,6 +24,13 @@ from sellers s
 alter table products
     add column if not exists company_id integer;
 
+alter table products
+    drop constraint if exists FK_product_company;
+alter table products
+    add constraint FK_product_company
+        foreign key (company_id)
+            references companies;
+
 update products
 set company_id = (select c.id
                   from companies c
