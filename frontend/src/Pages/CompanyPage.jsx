@@ -3,8 +3,8 @@ import {useEffect, useState} from "react";
 import {getCompany} from "../Services/CompanyService";
 import {MainLayout} from "../Components/Layouts/MainLayout";
 import {Button, Flex, Table} from "antd";
-import {getProducts} from "../Services/ProductService";
-import {LinkOutlined} from "@ant-design/icons";
+import {deleteProduct, getProducts} from "../Services/ProductService";
+import {DeleteOutlined, LinkOutlined} from "@ant-design/icons";
 import {mockCompany, mockProducts} from "../mock";
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
@@ -54,6 +54,12 @@ const productColumns = [
         dataIndex: 'count',
         key: 'count',
     },
+    {
+        title: 'Deleted',
+        dataIndex: 'deleted',
+        key: 'deleted',
+        render: (deleted) => deleted ? "true" : "false",
+    },
 ];
 
 export function CompanyPage() {
@@ -73,7 +79,7 @@ export function CompanyPage() {
     const urlParams = new URLSearchParams(queryString);
     const pageParam = urlParams.get("page");
     const pageSizeParam = urlParams.get("pageSize");
-    const [products, setProducts] = useState(mockProducts);
+    const [products, setProducts] = useState([]);
     // const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(pageParam ? +pageParam : 1);
@@ -83,7 +89,6 @@ export function CompanyPage() {
         setLoading(true);
         getProducts(page, pageSize, {
             companyIds: [id],
-            deleted: [false]
         })
             .then(productPage => {
                 setLoading(false);
@@ -111,10 +116,26 @@ export function CompanyPage() {
     };
     useEffect(() => {
         fetchProducts();
-    }, [company]);
-    useEffect(() => {
-        fetchProducts();
     }, [company, page, pageSize]);
+    const deleteCompanyProduct = (id) => {
+        deleteProduct(id)
+            .then(() => {
+                const newProducts = products.map(product => {
+                    if (product.id === id) {
+                        product.deleted = true;
+                    }
+                    return product;
+                })
+                setProducts(newProducts);
+            });
+    }
+    const columns = productColumns.concat({
+        render: (_, {id}) => (
+            <Button color="danger" variant="solid" onClick={() => deleteCompanyProduct(id)}>
+                <DeleteOutlined/>
+            </Button>
+        ),
+    });
     return (
         <MainLayout>
             <Sider style={{
@@ -148,12 +169,13 @@ export function CompanyPage() {
                 </Flex>
                 <Table
                     dataSource={products}
-                    columns={productColumns}
+                    columns={columns}
                     pagination={{
                         pageSize: pageSize,
                         total: total,
                         showSizeChanger: true,
                         onChange: onTablePaginationChange,
+                        showTotal: (total) => "Items found: " + total,
                     }}
                     loading={loading}
                     style={{

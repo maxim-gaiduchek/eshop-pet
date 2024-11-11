@@ -69,7 +69,7 @@ export async function getRequest(url, jsonResponse = true, queryParams = {}) {
         headers: buildHeaders(),
     })
         .then(response => {
-            return handleResponse(response, jsonResponse, () => getRequest(url))
+            return handleResponse(response, jsonResponse, () => getRequest(url, jsonResponse, queryParams))
         })
 }
 
@@ -98,6 +98,17 @@ export async function postRequest(url, body, jsonResponse = true) {
         headers: headers,
     })
         .then(response => {
-            return handleResponse(response, jsonResponse, () => postRequest(url, body))
+            return handleResponse(response, jsonResponse, () => postRequest(url, body, jsonResponse))
+        })
+}
+
+export async function deleteRequest(url, jsonResponse = true) {
+    return fetch(url, {
+        method: "DELETE",
+        credentials: "include",
+        headers: buildHeaders(),
+    })
+        .then(response => {
+            return handleResponse(response, jsonResponse, () => deleteRequest(url, jsonResponse))
         })
 }

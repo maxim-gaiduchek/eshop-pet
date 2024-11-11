@@ -27,6 +27,7 @@ export function ShopPage() {
     useEffect(() => {
         getProducts(page, pageSize, {
             name: name,
+            deleted: [false],
         })
             .then(productPage => {
                 setProducts(productPage.products);
