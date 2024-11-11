@@ -94,6 +94,7 @@ export function CompaniesPage() {
                         total: total,
                         showSizeChanger: true,
                         onChange: onTablePaginationChange,
+                        showTotal: (total) => "Companies found: " + total,
                     }}
                     loading={loading}
                     style={{

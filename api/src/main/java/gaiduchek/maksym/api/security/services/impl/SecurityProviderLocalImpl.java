@@ -21,13 +21,13 @@ public class SecurityProviderLocalImpl implements SecurityProvider {
 
     @Override
     public Long fetchUserId() {
-        return 1L;
+        return 9L;
     }
 
     @Override
     public User fetchUser() {
         return User.builder()
-                .id(1L)
+                .id(fetchUserId())
                 .name("Test")
                 .surname("Admin")
                 .email("test@gmail.com")

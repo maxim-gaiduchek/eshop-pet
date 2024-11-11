@@ -95,6 +95,7 @@ export function SellerPage() {
                         total: total,
                         showSizeChanger: true,
                         onChange: onTablePaginationChange,
+                        showTotal: (total) => "Companies: " + total,
                     }}
                     loading={loading}
                     style={{

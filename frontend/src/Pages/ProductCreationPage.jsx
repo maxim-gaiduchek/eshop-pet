@@ -7,7 +7,6 @@ import {toast} from "react-toastify";
 import {createProducts} from "../Services/ProductService";
 import TextArea from "antd/lib/input/TextArea";
 import {SubmitButton} from "../Components/Buttons/SubmitButton";
-import {mockCompanies} from "../mock";
 import {getCompanies} from "../Services/CompanyService";
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
@@ -18,11 +17,11 @@ export function ProductCreationPage() {
     const navigate = useNavigate();
     const [productName, setProductName] = useState("");
     const [productDescription, setProductDescription] = useState("");
-    const [productCompanyId, setProductCompanyId] = useState(1);
-    const [productCost, setProductCost] = useState(0);
-    const [productCount, setProductCount] = useState(0);
+    const [productCompanyId, setProductCompanyId] = useState();
+    const [productCost, setProductCost] = useState();
+    const [productCount, setProductCount] = useState();
     const [disabled, setDisabled] = useState(true);
-    const [companies, setCompanies] = useState(mockCompanies);
+    const [companies, setCompanies] = useState([]);
     const setupData = (value, setter) => {
         setDisabled(!productName || !productDescription || !productCost || !productCount || !productCompanyId);
         setter(value);
@@ -32,7 +31,7 @@ export function ProductCreationPage() {
         setDisabled(true);
         createProducts(productName, productDescription, productCost, productCount, productCompanyId)
             .then(createdProduct => {
-                toast("New seller successfully created!");
+                toast("New product successfully created!");
                 navigate("/companies/" + createdProduct.company.id);
             })
             .catch(() => {
@@ -47,7 +46,7 @@ export function ProductCreationPage() {
                 setCompanies(companyPage.companies);
             })
             .catch(() => {
-                setCompanies(mockCompanies);
+                setCompanies([]);
             });
     }, []);
     return (
@@ -80,7 +79,7 @@ export function ProductCreationPage() {
                                  onChange={(value) => setupData(value, setProductCount)}
                                  style={{width: "100%", margin: "10px 10px"}}/>
                     <Select placeholder={"Select a company"}
-                            value={productCompanyId} optionFilterProp={"label"} showSearch={true}
+                            optionFilterProp={"label"} showSearch={true}
                             onChange={(value) => setupData(value, setProductCompanyId)}
                             options={companies.map(company => {
                                 return {

@@ -156,6 +156,7 @@ export function SellersPage() {
                         total: total,
                         showSizeChanger: true,
                         onChange: onTablePaginationChange,
+                        showTotal: (total) => "Sellers found: " + total,
                     }}
                     loading={loading}
                     style={{
