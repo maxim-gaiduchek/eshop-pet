@@ -13,13 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
-public class BaseSearchQueryDto {
+public class SearchCompanyQueryDto extends BaseSearchQueryDto {
 
-    private List<Long> ids;
-    private String createdAtMin;
-    private String createdAtMax;
-    private Integer page = 1;
-    private Integer pageSize = 20;
-    private String sortBy = "createdAt";
-    private String sortDirection = "desc";
+    private String name;
+    private List<Long> sellerIds;
 }

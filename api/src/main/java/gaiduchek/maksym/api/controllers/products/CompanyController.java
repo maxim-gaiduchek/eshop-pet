@@ -1,6 +1,8 @@
 package gaiduchek.maksym.api.controllers.products;
 
 import gaiduchek.maksym.api.dto.products.CompanyDto;
+import gaiduchek.maksym.api.dto.search.SearchCompanyDto;
+import gaiduchek.maksym.api.dto.search.SearchCompanyQueryDto;
 import gaiduchek.maksym.api.mappers.CompanyMapper;
 import gaiduchek.maksym.api.services.interfaces.CompanyService;
 import gaiduchek.maksym.api.validation.groups.CreateGroup;
@@ -10,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,6 +32,13 @@ public class CompanyController {
     public CompanyDto get(@PathVariable Long id) {
         var company = companyService.getByIdOrThrow(id);
         return companyMapper.toDto(company);
+    }
+
+    @GetMapping
+    @RolesAllowed({"ROLE_SELLER", "ROLE_ADMINISTRATOR"})
+    public SearchCompanyDto findAll(@ModelAttribute SearchCompanyQueryDto queryDto) {
+        var filter = companyMapper.queryToFilter(queryDto);
+        return companyService.find(filter);
     }
 
     @PostMapping

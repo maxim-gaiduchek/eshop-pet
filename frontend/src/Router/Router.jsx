@@ -7,6 +7,9 @@ import {MainLayout} from "../Components/Layouts/MainLayout";
 import {RegistrationPage} from "../Pages/RegistrationPage";
 import {UserPage} from "../Pages/UserPage";
 import {SellersPage} from "../Pages/SellersPage";
+import {SellerCreationPage} from "../Pages/SellerCreationPage";
+import {CompaniesPage} from "../Pages/CompaniesPage";
+import {CompanyCreationPage} from "../Pages/CompanyCreationPage";
 
 export const router = createBrowserRouter([
     {
@@ -42,5 +45,31 @@ export const router = createBrowserRouter([
     {
         path: "/sellers",
         element: <SellersPage/>
-    }
+    },
+    {
+        path: "/sellers/new",
+        element: <SellerCreationPage/>
+    },
+    {
+        path: "/sellers/:id",
+        element:
+            <MainLayout>
+                <UserPage/> {/* TODO */}
+            </MainLayout>
+    },
+    {
+        path: "/companies",
+        element: <CompaniesPage/>
+    },
+    {
+        path: "/companies/new",
+        element: <CompanyCreationPage/>
+    },
+    {
+        path: "/companies/:id",
+        element:
+            <MainLayout>
+                <UserPage/> {/* TODO */}
+            </MainLayout>
+    },
 ])

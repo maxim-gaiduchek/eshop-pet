@@ -10,8 +10,6 @@ public interface AccessService {
 
     boolean isCustomer();
 
-    boolean isSeller();
-
     boolean isManager();
 
     boolean isAdministrator();

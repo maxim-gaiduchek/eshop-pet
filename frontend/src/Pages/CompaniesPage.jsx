@@ -1,10 +1,10 @@
 import {MainLayout} from "../Components/Layouts/MainLayout";
 import {Button, Flex, Table} from "antd";
 import {Link} from "react-router-dom";
-import {LinkOutlined, MailOutlined} from "@ant-design/icons";
+import {LinkOutlined} from "@ant-design/icons";
 import {useEffect, useState} from "react";
-import {getSellers} from "../Services/SellerService";
 import {AdministratorSider} from "../Components/Administrator/AdministratorSider";
+import {getCompanies} from "../Services/CompanyService";
 
 const columns = [
     {
@@ -24,104 +24,61 @@ const columns = [
         key: 'name',
     },
     {
-        title: 'Surname',
-        dataIndex: 'surname',
-        key: 'surname',
-    },
-    {
-        title: 'Phone',
-        dataIndex: 'phone',
-        key: 'phone',
-    },
-    {
-        title: 'E-Mail',
-        dataIndex: 'email',
-        key: 'email',
-        render: (email) => (
-            <Link to={"mailto:" + email}>
-                {email}
-                <MailOutlined/>
+        title: 'Seller',
+        dataIndex: 'seller',
+        key: 'seller',
+        render: (seller) => (
+            <Link to={"/sellers/" + seller.id}>
+                {seller.name} {seller.surname}
+                <LinkOutlined/>
             </Link>
         ),
     },
-    {
-        title: 'Companies',
-        dataIndex: 'companies',
-        key: 'companies',
-        render: (_, {companies}) => (companies && companies.length !== 0 ?
-                <>
-                    {
-                        companies.map(company => (
-                            <Link to={"/companies/" + company.id}>
-                                {company.name}
-                                <LinkOutlined/>
-                                <br/>
-                            </Link>
-                        ))
-                    }
-                </> :
-                <>
-                    <i style={{color: "grey"}}>No companies</i>
-                </>
-        )
-    },
-    {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
-    },
 ];
 
-const mockSellers = Array.from({length: 100}).map((_, i) => {
+const mockCompanies = Array.from({length: 300}).map((_, i) => {
     return {
-        id: i,
-        name: "Seller " + i,
-        surname: i,
-        phone: "+420607777777",
-        email: `test${i}@gmail.com`,
-        address: "Test str., " + i,
-        companies: Array.from({length: 3}).map((_, j) => {
-            return {
-                id: 3 * i + j,
-                name: "Company " + (3 * i + j),
-            }
-        })
+        id: 1,
+        name: "Company " + i,
+        seller: {
+            id: Math.floor(i / 3),
+            name: "Seller",
+            surname: Math.floor(i / 3),
+        },
     }
 })
 
-export function SellersPage() {
-    document.title = "Sellers | E-Shop Pet"
+export function CompaniesPage() {
+    document.title = "Companies | E-Shop Pet"
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const pageParam = urlParams.get("page");
     const pageSizeParam = urlParams.get("pageSize");
-    // const [sellers, setSellers] = useState(mockSellers);
-    const [sellers, setSellers] = useState([]);
+    // const [companies, setCompanies] = useState(mockCompanies);
+    const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(pageParam ? +pageParam : 1);
     const [pageSize, setPageSize] = useState(pageSizeParam ? +pageSizeParam : 10);
-    const [total, setTotal] = useState(sellers.length);
-    const fetchSellers = () => {
+    const [total, setTotal] = useState(companies.length);
+    const fetchCompanies = () => {
         setLoading(true);
-        getSellers(page, pageSize)
-            .then(sellerPage => {
+        getCompanies(page, pageSize)
+            .then(companyPage => {
                 setLoading(false);
-                setSellers(sellerPage.sellers);
-                setPage(sellerPage.currentPage);
-                setTotal(sellerPage.totalMatches);
+                setCompanies(companyPage.companies);
+                setPage(companyPage.currentPage);
+                setTotal(companyPage.totalMatches);
             })
             /*.then(() => {
-                setSellers(mockSellers);
+                setCompanies(mockCompanies);
                 setPage(1);
                 setPageSize(10);
-                setTotal(mockSellers.length);
+                setTotal(mockCompanies.length);
             })*/
             .catch(() => {
                 setLoading(false);
-                setSellers(mockSellers);
+                setCompanies(mockCompanies);
                 setPage(1);
-                setPageSize(10);
-                setTotal(mockSellers.length);
             })
     }
     const onTablePaginationChange = (page, pageSize) => {
@@ -129,7 +86,7 @@ export function SellersPage() {
         setPageSize(pageSize);
     };
     useEffect(() => {
-        fetchSellers();
+        fetchCompanies();
     }, [page, pageSize]);
     return (
         <MainLayout>
@@ -140,23 +97,24 @@ export function SellersPage() {
                 maxWidth: 1200,
                 margin: "0 auto",
                 justifyContent: "flex-start",
+                flexWrap: "wrap",
                 padding: "0 auto",
                 overflowY: "auto",
                 alignItems: "center",
-                flexDirection: "column",
+                flexDirection: "column"
             }}>
                 <Flex style={{
                     width: "100%",
                     alignItems: "center",
                     justifyContent: "space-between",
                 }}>
-                    <h1>Sellers</h1>
-                    <Link to={"/sellers/new"}>
-                        <Button>Add seller</Button>
+                    <h1>Companies</h1>
+                    <Link to={"/companies/new"}>
+                        <Button>Add company</Button>
                     </Link>
                 </Flex>
                 <Table
-                    dataSource={sellers}
+                    dataSource={companies}
                     columns={columns}
                     pagination={{
                         pageSize: pageSize,
@@ -168,7 +126,6 @@ export function SellersPage() {
                     style={{
                         width: "100%",
                         overflowX: "auto",
-                        overflowY: "auto",
                     }}
                 />
             </Flex>

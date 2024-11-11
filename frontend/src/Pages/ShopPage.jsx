@@ -104,7 +104,6 @@ export function ShopPage() {
     const [productPage, setProductPage] = useState(defaultProductPage);
     useEffect(() => {
         getProducts()
-            .then(data => data.json())
             .then(json => setProductPage(json))
             .then(() => setProductPage(defaultProductPage))
             .catch(() => setProductPage(defaultProductPage))

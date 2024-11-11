@@ -10,6 +10,7 @@ import gaiduchek.maksym.api.model.Role;
 import gaiduchek.maksym.api.repository.CustomerRepository;
 import gaiduchek.maksym.api.security.services.interfaces.AuthService;
 import gaiduchek.maksym.api.services.interfaces.CustomerService;
+import gaiduchek.maksym.api.services.interfaces.UserService;
 import gaiduchek.maksym.api.utils.HashUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
     private final AuthService authService;
+    private final UserService userService;
 
     @Override
     public Optional<Customer> findById(Long id) {
@@ -43,7 +45,7 @@ public class CustomerServiceImpl implements CustomerService {
         var customer = customerMapper.toEntity(customerDto);
         customer.setRole(Role.ROLE_CUSTOMER);
         var savedCustomer = customerRepository.save(customer);
-        authService.createCredentials(customer.getId(), customerDto.getPassword());
+        authService.createCredentials(savedCustomer.getId(), customerDto.getPassword());
         return savedCustomer;
     }
 
@@ -51,10 +53,14 @@ public class CustomerServiceImpl implements CustomerService {
         if (HashUtils.isEmptySha256Hash(customerDto.getPassword())) {
             throw new ValidationException(UserExceptionCodes.USER_PASSWORD_IS_EMPTY);
         }
+        if (userService.existsByEmail(customerDto.getEmail())) {
+            throw new ValidationException(UserExceptionCodes.USER_WITH_EMAIL_ALREADY_EXISTS, customerDto.getEmail());
+        }
     }
 
     @Override
     public Customer update(Long id, CustomerDto customerDto) {
+        checkUpdatePossibility(id, customerDto);
         var customer = getByIdOrThrow(id);
         customer.setName(customerDto.getName());
         customer.setSurname(customerDto.getSurname());
@@ -62,5 +68,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPhone(customerDto.getPhone());
         customer.setAddress(customerDto.getAddress());
         return customerRepository.save(customer);
+    }
+
+    private void checkUpdatePossibility(Long id, CustomerDto customerDto) {
+        if (userService.existsByEmailAndIdNot(customerDto.getEmail(), id)) {
+            throw new ValidationException(UserExceptionCodes.USER_WITH_EMAIL_ALREADY_EXISTS, customerDto.getEmail());
+        }
     }
 }

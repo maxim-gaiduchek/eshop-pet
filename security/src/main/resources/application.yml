@@ -50,7 +50,7 @@ jwt:
     refresh: 'YWZsaGFsa2J2amxoYnNsamhnY2xrYWhsa2Nsa2phbGhma3Nha2pnbW5iY2phbmxrYnZpbGFoaWxjYnNrYWJramNsa3FwanZkc2poaGZnc2RramhuaWdsa2F1ZmhjaWphaG87Y2h1eWFnaGlhYnZpYmFsZ2RsaWFodWNobGtoYWhsamZjYmxrYXNzbGhidmtiYWthbGhkZ2t5YWdoY25ha2NrYWxrZGpoamFoZmFqbmNqYWp2a25mZmFrampodmFubGpuYWtqYmRoaWFkaWhsYWpjbG5ha2F2aGtqYWhsa2pmbGl1YXlpbHVjeWhhaW91amlvampraGFnZnVocWpqZmtqdmpxb3Vob2lqZmpxaWpm'
   cookie:
     age:
-      access: 30
+      access: 1800
       refresh: 2678400
     secure: false
 

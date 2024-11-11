@@ -15,4 +15,5 @@ public class UserCredentialsDto {
 
     private Long userId;
     private String password;
+    private String email;
 }

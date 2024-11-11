@@ -60,8 +60,8 @@ function handleResponse(response, jsonResponse, onTokenExpiration) {
     }
 }
 
-export async function getRequest(url, jsonResponse = true) {
-    return fetch(url, {
+export async function getRequest(url, jsonResponse = true, queryParams = {}) {
+    return fetch(url + buildQueryParams(queryParams), {
         method: "GET",
         credentials: "include",
         headers: buildHeaders(),
@@ -69,6 +69,17 @@ export async function getRequest(url, jsonResponse = true) {
         .then(response => {
             return handleResponse(response, jsonResponse, () => getRequest(url))
         })
+}
+
+function buildQueryParams(queryParams) {
+    if (!queryParams) {
+        return "";
+    }
+    const urlParams = new URLSearchParams();
+    for (const [key, value] of Object.entries(queryParams)) {
+        urlParams.set(key, value);
+    }
+    return "?" + urlParams.toString();
 }
 
 export async function postRequest(url, body, jsonResponse = true) {

@@ -23,8 +23,7 @@ export function RegistrationPage() {
             navigate("/shop");
         }
     }, []);
-    const loginAfterRegistration = async (e) => {
-        e.preventDefault();
+    const loginAfterRegistration = async () => {
         setDisabled(true);
         login(customerEmail, customerPassword)
             .then(() => {
@@ -35,9 +34,10 @@ export function RegistrationPage() {
             });
     }
     const registerOnClick = async (e) => {
+        e.preventDefault();
         setDisabled(true);
         createCustomer(customerName, customerSurname, customerEmail, customerPhone, customerAddress, customerPassword)
-            .then(() => loginAfterRegistration(e))
+            .then(() => loginAfterRegistration())
             .catch(() => {
                 setDisabled(false);
             });
