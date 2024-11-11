@@ -5,7 +5,6 @@ import {MainLayout} from "../Components/Layouts/MainLayout";
 import {Button, Flex, Table} from "antd";
 import {deleteProduct, getProducts} from "../Services/ProductService";
 import {DeleteOutlined, LinkOutlined} from "@ant-design/icons";
-import {mockCompany, mockProducts} from "../mock";
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
 import {MenuButtons} from "../Components/Sider/MenuButtons";
@@ -73,7 +72,7 @@ export function CompanyPage() {
                 setCompany(company);
                 document.title = `${company.name} | Seller | E-Shop Pet`;
             })
-            .catch(() => setCompany(mockCompany))
+            .catch(() => setCompany({}))
     }, []);
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -104,10 +103,10 @@ export function CompanyPage() {
             })*/
             .catch(() => {
                 setLoading(false);
-                setProducts(mockProducts);
+                setProducts([]);
                 setPage(1);
                 setPageSize(10);
-                setTotal(mockProducts.length);
+                setTotal(0);
             })
     }
     const onTablePaginationChange = (page, pageSize) => {
