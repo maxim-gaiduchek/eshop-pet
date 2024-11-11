@@ -14,6 +14,8 @@ import static org.springframework.http.HttpMethod.POST;
 @RequiredArgsConstructor
 public enum UnsecuredEndpoint {
 
+    GET_SWAGGER("/api/swagger-ui/.*", GET),
+    GET_API_DOCS("/api/v3/api-docs.*", GET),
     GET_ALL("/security/.*", GET),
     POST_ALL("/security/.*", POST),
     POST_CREDENTIALS("/security/internal/credentials", POST),
