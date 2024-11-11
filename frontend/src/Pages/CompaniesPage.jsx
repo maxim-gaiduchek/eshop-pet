@@ -5,6 +5,7 @@ import {LinkOutlined} from "@ant-design/icons";
 import {useEffect, useState} from "react";
 import {AdministratorSider} from "../Components/Administrator/AdministratorSider";
 import {getCompanies} from "../Services/CompanyService";
+import {mockCompanies} from "../mock";
 
 const columns = [
     {
@@ -12,7 +13,7 @@ const columns = [
         dataIndex: 'id',
         key: 'id',
         render: (id) => (
-            <Link to={"/sellers/" + id}>
+            <Link to={"/companies/" + id}>
                 {id}
                 <LinkOutlined/>
             </Link>
@@ -35,18 +36,6 @@ const columns = [
         ),
     },
 ];
-
-const mockCompanies = Array.from({length: 300}).map((_, i) => {
-    return {
-        id: 1,
-        name: "Company " + i,
-        seller: {
-            id: Math.floor(i / 3),
-            name: "Seller",
-            surname: Math.floor(i / 3),
-        },
-    }
-})
 
 export function CompaniesPage() {
     document.title = "Companies | E-Shop Pet"

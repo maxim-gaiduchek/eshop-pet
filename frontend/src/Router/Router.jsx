@@ -10,6 +10,8 @@ import {SellersPage} from "../Pages/SellersPage";
 import {SellerCreationPage} from "../Pages/SellerCreationPage";
 import {CompaniesPage} from "../Pages/CompaniesPage";
 import {CompanyCreationPage} from "../Pages/CompanyCreationPage";
+import {CompanyPage} from "../Pages/CompanyPage";
+import {ProductCreationPage} from "../Pages/ProductCreationPage";
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +36,10 @@ export const router = createBrowserRouter([
             <MainLayout>
                 <ProductPage/>
             </MainLayout>
+    },
+    {
+        path: "/products/new",
+        element: <ProductCreationPage/>
     },
     {
         path: "/users/:id",
@@ -67,9 +73,6 @@ export const router = createBrowserRouter([
     },
     {
         path: "/companies/:id",
-        element:
-            <MainLayout>
-                <UserPage/> {/* TODO */}
-            </MainLayout>
+        element: <CompanyPage/>
     },
 ])

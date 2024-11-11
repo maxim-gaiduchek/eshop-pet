@@ -2,112 +2,43 @@ import {MainLayout} from "../Components/Layouts/MainLayout";
 import {useEffect, useState} from "react";
 import {getProducts} from "../Services/ProductService";
 import {ProductItem} from "../Components/Product/ProductItem";
-import {Flex} from "antd"
+import {Flex, Pagination} from "antd"
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
-
-const defaultProductPage = {
-    products: [
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-        {
-            id: 1,
-            name: "Test",
-            description: "Test description",
-            price: 300
-        },
-    ],
-    //products: [],
-    currentPage: 1,
-    totalMatches: 0,
-    totalPages: 0
-};
+import {mockProducts} from "../mock";
 
 export function ShopPage() {
     document.title = "Products | E-Shop Pet";
-    const [productPage, setProductPage] = useState(defaultProductPage);
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const pageParam = urlParams.get("page");
+    const pageSizeParam = urlParams.get("pageSize");
+    const [products, setProducts] = useState(mockProducts);
+    const [page, setPage] = useState(pageParam ? +pageParam : 1);
+    const [pageSize, setPageSize] = useState(pageSizeParam ? +pageSizeParam : 10);
+    const [total, setTotal] = useState(products.length);
+    const onTablePaginationChange = (page, pageSize) => {
+        setPage(page);
+        setPageSize(pageSize);
+    };
     useEffect(() => {
-        getProducts()
-            .then(json => setProductPage(json))
-            .then(() => setProductPage(defaultProductPage))
-            .catch(() => setProductPage(defaultProductPage))
-    }, []);
+        getProducts(page, pageSize)
+            .then(productPage => {
+                setProducts(productPage.products);
+                setPage(productPage.currentPage);
+                setTotal(productPage.totalMatches);
+            })
+            /*.then(() => {
+                setProducts(mockProducts);
+                setPage(1);
+                setPageSize(10);
+                setTotal(mockProducts.length);
+            })*/
+            .catch(() => {
+                setProducts(mockProducts);
+                setPage(1);
+            })
+    }, [page, pageSize]);
     return (
         <MainLayout>
             <Sider style={{
@@ -129,12 +60,12 @@ export function ShopPage() {
             }}>
                 <h1 style={{width: "100%"}}>Search</h1>
                 {
-                    productPage.products.map((product) => {
-                        return (
-                            <ProductItem product={product}/>
-                        )
-                    })
+                    products.map((product) => (
+                        <ProductItem product={product}/>
+                    ))
                 }
+                <Pagination pageSize={pageSize} total={total} showSizeChanger={true} onChange={onTablePaginationChange}
+                            align={"end"} style={{width: "100%"}}/>
             </Flex>
         </MainLayout>
     )

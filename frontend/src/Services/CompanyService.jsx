@@ -5,8 +5,9 @@ export async function getCompany(id) {
     return getRequest(apiUrl + "/companies/" + id)
 }
 
-export async function getCompanies(page = 1, pageSize = 10) {
+export async function getCompanies(page = 1, pageSize = 10, queryParams = {}) {
     return getRequest(apiUrl + "/companies", true, {
+        ...queryParams,
         page: page,
         pageSize: pageSize
     })

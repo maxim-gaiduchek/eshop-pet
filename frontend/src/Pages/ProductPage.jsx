@@ -2,27 +2,20 @@ import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import {getProduct} from "../Services/ProductService";
 import {Col, Rate, Row} from "antd";
-
-const defaultProduct = {
-    name: "Test",
-    description: "Test description",
-    price: 300,
-    company: {
-        name: "Test company"
-    }
-}
+import {mockProduct} from "../mock";
 
 export function ProductPage() {
     document.title = "Product | E-Shop Pet";
     const {id} = useParams();
-    const [product, setProduct] = useState(defaultProduct);
+    const [product, setProduct] = useState(mockProduct);
+    // const [product, setProduct] = useState({});
     useEffect(() => {
         getProduct(id)
             .then(product => {
                 setProduct(product);
                 document.title = `${product.name} | ${product.company.name} | E-Shop Pet`;
             })
-            .catch(() => setProduct(defaultProduct))
+            .catch(() => setProduct(mockProduct))
     }, []);
     return (
         <div style={{width: "100%", maxWidth: 1200, margin: "0 auto", paddingTop: 20}}>
@@ -37,10 +30,10 @@ export function ProductPage() {
                     <div className={'productDetails'}>
                         <span>| by: {product.company.name}</span>
                     </div>
-                    <h4 className={'productTitle'}>&euro;{product.price}</h4>
-                    <Rate allowHalf defaultValue={2.5} disabled style={{
+                    <h4 className={'productTitle'}>&euro;{product.cost}</h4>
+                    {/*<Rate allowHalf defaultValue={2.5} disabled style={{
                         margin: "10px 0"
-                    }}/><br/><br/>
+                    }}/><br/><br/>*/}
                     <div className={"productDescription"}>
                         {product.description}
                     </div>

@@ -62,7 +62,7 @@ public class AccessServiceImpl implements AccessService {
     @Override
     public void checkUserOwnsCompany(Company company) {
         var userId = securityProvider.fetchUserId();
-        if (Objects.equals(company.getSeller().getId(), userId)) {
+        if (!Objects.equals(company.getSeller().getId(), userId)) {
             throw new ValidationException(CompanyExceptionCodes.COMPANY_IS_NOT_OWNED_BY_SELLER, company.getId());
         }
     }
