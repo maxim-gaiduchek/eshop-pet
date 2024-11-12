@@ -43,8 +43,8 @@ export function RegistrationPage() {
             });
     }
     const setupData = (value, setter) => {
-        setDisabled(!customerName || !customerSurname || !customerEmail || !customerPhone || !customerAddress || !customerPassword);
         setter(value);
+        setDisabled(!customerName || !customerSurname || !customerEmail || !customerPhone || !customerAddress || !customerPassword);
     }
     return (
         <MainLayout>

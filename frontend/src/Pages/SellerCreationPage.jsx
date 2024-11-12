@@ -21,8 +21,8 @@ export function SellerCreationPage() {
     const [sellerPassword, setSellerPassword] = useState("");
     const [disabled, setDisabled] = useState(true);
     const setupData = (value, setter) => {
-        setDisabled(!sellerName || !sellerSurname || !sellerEmail || !sellerPhone || !sellerAddress || !sellerPassword);
         setter(value);
+        setDisabled(!sellerName || !sellerSurname || !sellerEmail || !sellerPhone || !sellerAddress || !sellerPassword);
     }
     const createOnClick = async (e) => {
         e.preventDefault();

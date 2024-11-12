@@ -2,7 +2,7 @@ import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Flex, Table} from "antd";
 import {MainLayout} from "../Components/Layouts/MainLayout";
-import {mockCompanies, mockSeller} from "../mock";
+import {mockSeller} from "../mock";
 import {MailOutlined} from "@ant-design/icons";
 import {getCompanies} from "../Services/CompanyService";
 import {companyColumns} from "../table_columns";
@@ -41,7 +41,7 @@ export function SellerPage() {
             })
             .catch(() => {
                 setLoading(false);
-                setCompanies(mockCompanies);
+                setCompanies([]);
                 setPage(1);
             })
     }

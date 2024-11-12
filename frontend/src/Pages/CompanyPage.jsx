@@ -30,6 +30,13 @@ const productColumns = [
         title: 'Description',
         dataIndex: 'description',
         key: 'description',
+        render: (description) => (
+            <p style={{
+                maxWidth: "300px",
+                maxHeight: "150px",
+                overflow: "scroll",
+            }}>{description}</p>
+        ),
     },
     {
         title: 'Company',
@@ -133,7 +140,7 @@ export function CompanyPage() {
             <Button color="danger" variant="solid" onClick={() => deleteCompanyProduct(id)}>
                 <DeleteOutlined/>
             </Button>
-        ),
+        )
     });
     return (
         <MainLayout>

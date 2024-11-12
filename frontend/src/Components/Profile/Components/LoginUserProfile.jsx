@@ -50,7 +50,7 @@ export function LoginUserProfile() {
                     }}>
 
                         <Tooltip title={"Account"} placement={"bottom"}>
-                            <Button type={"text"} onClick={logoutOnClick} style={{
+                            <Button type={"text"} style={{
                                 margin: "0 5px",
                             }}>
                                 <UserOutlined style={{marginRight: "10px"}}/>

@@ -2,7 +2,7 @@ import {MainLayout} from "../Components/Layouts/MainLayout";
 import {useEffect, useState} from "react";
 import {getProducts} from "../Services/ProductService";
 import {ProductItem} from "../Components/Product/ProductItem";
-import {Flex, Input, InputNumber, Pagination, Select} from "antd"
+import {Flex, InputNumber, Pagination, Select} from "antd"
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
 import {MenuButtons} from "../Components/Sider/MenuButtons";
@@ -29,16 +29,13 @@ export function ShopPage() {
         if (value === "newest") {
             setSortBy("createdAt");
             setSortDirection("desc");
-        }
-        if (value === "oldest") {
+        } else if (value === "oldest") {
             setSortBy("createdAt");
             setSortDirection("asc");
-        }
-        if (value === "cheapest") {
+        } else if (value === "cheapest") {
             setSortBy("cost");
             setSortDirection("asc");
-        }
-        if (value === "expensive") {
+        } else if (value === "expensive") {
             setSortBy("cost");
             setSortDirection("desc");
         }
@@ -47,6 +44,12 @@ export function ShopPage() {
         setPage(page);
         setPageSize(pageSize);
     };
+    const setupData = (value, setter, defaultValue) => {
+        if (!value) {
+            value = defaultValue;
+        }
+        setter(value);
+    }
     useEffect(() => {
         getProducts(page, pageSize, {
             name: name,
@@ -78,6 +81,7 @@ export function ShopPage() {
                 height: "100%",
                 backgroundColor: secondaryBackgroundColor,
                 overflowY: "hidden",
+                padding: "10px 10px",
             }}>
                 <MenuButtons/>
                 <h3>Filters</h3>
@@ -85,8 +89,10 @@ export function ShopPage() {
                     flexDirection: "column",
                 }}>
                     <h4>Price</h4>
-                    <p>From: <InputNumber value={costMin} onChange={value => setCostMin(value)}/></p>
-                    <p>To: <InputNumber value={costMax} onChange={value => setCostMax(value)}/></p>
+                    <p>From: <InputNumber value={costMin} min={0}
+                                          onChange={value => setupData(value, setCostMin, 0)}/></p>
+                    <p>To: <InputNumber value={costMax} min={0}
+                                        onChange={value => setupData(value, setCostMax, 0)}/></p>
                 </Flex>
             </Sider>
             <Flex style={{

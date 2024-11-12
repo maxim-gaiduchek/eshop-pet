@@ -16,8 +16,8 @@ export function CompanyCreationPage() {
     const [companyName, setCompanyName] = useState("");
     const [disabled, setDisabled] = useState(true);
     const setupData = (value, setter) => {
-        setDisabled(!companyName);
         setter(value);
+        setDisabled(!companyName);
     }
     const createOnClick = async (e) => {
         e.preventDefault();

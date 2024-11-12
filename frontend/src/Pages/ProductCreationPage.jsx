@@ -20,12 +20,8 @@ export function ProductCreationPage() {
     const [productCompanyId, setProductCompanyId] = useState();
     const [productCost, setProductCost] = useState();
     const [productCount, setProductCount] = useState();
-    const [disabled, setDisabled] = useState(true);
+    const [disabled, setDisabled] = useState(false);
     const [companies, setCompanies] = useState([]);
-    const setupData = (value, setter) => {
-        setDisabled(!productName || !productDescription || !productCost || !productCount || !productCompanyId);
-        setter(value);
-    }
     const createOnClick = async (e) => {
         e.preventDefault();
         setDisabled(true);
@@ -60,27 +56,27 @@ export function ProductCreationPage() {
                 <MenuButtons/>
             </Sider>
             <CenteredLayout>
-                <form onSubmit={(e) => createOnClick(e)} style={{textAlign: "center"}}>
+                <form onSubmit={createOnClick} style={{textAlign: "center"}}>
                     <h1>New product</h1>
                     <Input type={"text"} placeholder={"Product name"}
                            value={productName}
-                           onChange={(e) => setupData(e.target.value, setProductName)}
+                           onChange={(e) => setProductName(e.target.value)}
                            style={{width: "100%", margin: "10px 10px"}}/>
                     <TextArea placeholder={"Product description"} rows={4}
                               value={productDescription}
-                              onChange={(e) => setupData(e.target.value, setProductDescription)}
+                              onChange={(e) => setProductDescription(e.target.value)}
                               style={{width: "100%", margin: "10px 10px"}}/>
                     <InputNumber placeholder={"Product cost"} addonAfter={"€"}
                                  stringMode step={"0.01"} min={"0.01"} value={productCost}
-                                 onChange={(value) => setupData(value, setProductCost)}
+                                 onChange={(value) => setProductCost(value)}
                                  style={{width: "100%", margin: "10px 10px"}}/>
                     <InputNumber placeholder={"Product count"}
                                  min={0} value={productCount}
-                                 onChange={(value) => setupData(value, setProductCount)}
+                                 onChange={(value) => setProductCount(value)}
                                  style={{width: "100%", margin: "10px 10px"}}/>
                     <Select placeholder={"Select a company"}
                             optionFilterProp={"label"} showSearch={true}
-                            onChange={(value) => setupData(value, setProductCompanyId)}
+                            onChange={(value) => setProductCompanyId(value)}
                             options={companies.map(company => {
                                 return {
                                     value: company.id,
@@ -88,7 +84,8 @@ export function ProductCreationPage() {
                                 }
                             })}
                             style={{width: "100%", margin: "10px 10px"}}/>
-                    <SubmitButton disabled={disabled} value={"Create"}/>
+                    <SubmitButton disabled={disabled || !productName || !productDescription || !productCost ||
+                        !productCount || !productCompanyId} value={"Create"}/>
                 </form>
             </CenteredLayout>
         </MainLayout>
