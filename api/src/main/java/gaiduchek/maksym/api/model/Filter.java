@@ -31,6 +31,8 @@ public class Filter extends BaseEntity {
     private FilterCategory filterCategory;
     @Column(name = "deleted")
     private Boolean deleted;
+    @Column(name = "exclude")
+    private Boolean exclude;
 
     @Transient
     private Long productsCount;
