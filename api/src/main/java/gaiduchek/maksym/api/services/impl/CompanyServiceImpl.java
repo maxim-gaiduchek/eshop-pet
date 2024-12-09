@@ -3,6 +3,7 @@ package gaiduchek.maksym.api.services.impl;
 import gaiduchek.maksym.api.dto.products.CompanyDto;
 import gaiduchek.maksym.api.dto.search.SearchCompanyDto;
 import gaiduchek.maksym.api.exceptions.EntityNotFoundException;
+import gaiduchek.maksym.api.exceptions.ValidationException;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.CompanyExceptionCodes;
 import gaiduchek.maksym.api.filters.CompanyFilter;
 import gaiduchek.maksym.api.mappers.CompanyMapper;
@@ -59,10 +60,18 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company create(CompanyDto companyDto) {
+        checkCreationPossibility(companyDto);
         var company = companyMapper.toEntity(companyDto);
         enrichWithSeller(company);
         company.setDeleted(false);
         return companyRepository.save(company);
+    }
+
+    private void checkCreationPossibility(CompanyDto companyDto) {
+        var name = companyDto.getName();
+        if (companyRepository.existsByName(name)) {
+            throw new ValidationException(CompanyExceptionCodes.COMPANY_NAME_ALREADY_EXISTS, name);
+        }
     }
 
     private void enrichWithSeller(Company company) {
@@ -73,9 +82,17 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company update(Long id, CompanyDto companyDto) {
+        checkUpdatePossibility(companyDto, id);
         var company = fetchCompany(id);
         company.setName(companyDto.getName());
         return companyRepository.save(company);
+    }
+
+    private void checkUpdatePossibility(CompanyDto companyDto, Long id) {
+        var name = companyDto.getName();
+        if (companyRepository.existsByNameAndIdNot(name, id)) {
+            throw new ValidationException(CompanyExceptionCodes.COMPANY_NAME_ALREADY_EXISTS, name);
+        }
     }
 
     private Company fetchCompany(Long companyId) {
