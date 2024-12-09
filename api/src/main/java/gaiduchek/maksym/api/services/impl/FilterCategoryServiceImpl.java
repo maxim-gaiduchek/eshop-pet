@@ -7,7 +7,6 @@ import gaiduchek.maksym.api.exceptions.ValidationException;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.AccessExceptionCodes;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.FilterCategoryExceptionCodes;
 import gaiduchek.maksym.api.mappers.FilterCategoryMapper;
-import gaiduchek.maksym.api.model.Administrator;
 import gaiduchek.maksym.api.model.FilterCategory;
 import gaiduchek.maksym.api.repository.FilterCategoryRepository;
 import gaiduchek.maksym.api.security.services.interfaces.SecurityProvider;

@@ -8,7 +8,7 @@ alter table product_categories
     drop constraint if exists FK_product_category_manager;
 
 update product_categories
-set responsible_id = (select min(id) from administrators);
+set responsible_id = 1;
 
 alter table product_categories
     add constraint FK_product_category_responsible
@@ -29,7 +29,7 @@ alter table filter_categories
     drop constraint if exists FK_filters_category_manager;
 
 update filter_categories
-set responsible_id = (select min(id) from administrators);
+set responsible_id = 1;
 
 alter table filter_categories
     add constraint FK_filter_category_responsible
@@ -50,7 +50,7 @@ alter table filters
     drop constraint if exists FK_filter_manager;
 
 update filters
-set responsible_id = (select min(id) from administrators);
+set responsible_id = 1;
 
 alter table filters
     add constraint FK_filter_responsible

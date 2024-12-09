@@ -1,5 +1,6 @@
 package gaiduchek.maksym.api.controllers.products;
 
+import gaiduchek.maksym.api.dto.products.FilterCategoryDto;
 import gaiduchek.maksym.api.dto.products.FilterDto;
 import gaiduchek.maksym.api.mappers.FilterMapper;
 import gaiduchek.maksym.api.services.interfaces.FilterService;
@@ -7,12 +8,16 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/filters")
@@ -41,5 +46,11 @@ public class FilterController {
     @PreAuthorize("@accessService.isAdministrator()")
     public void delete(@PathVariable Long id) {
         filterService.delete(id);
+    }
+
+    @GetMapping
+    public List<FilterCategoryDto> getAll(@RequestParam(required = false) List<Long> selectedFilterIds,
+                                          @RequestParam(required = false) List<Long> excludedFilterCategoriesIds) {
+        return filterService.getAll(selectedFilterIds, excludedFilterCategoriesIds);
     }
 }

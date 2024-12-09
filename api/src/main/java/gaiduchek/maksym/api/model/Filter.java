@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,4 +31,14 @@ public class Filter extends BaseEntity {
     private FilterCategory filterCategory;
     @Column(name = "deleted")
     private Boolean deleted;
+
+    @Transient
+    private Long productsCount;
+
+    public Filter(Long id, String name, FilterCategory filterCategory, Long productsCount) {
+        this.name = name;
+        this.filterCategory = filterCategory;
+        this.productsCount = productsCount;
+        setId(id);
+    }
 }

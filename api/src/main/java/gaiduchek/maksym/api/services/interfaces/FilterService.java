@@ -1,8 +1,10 @@
 package gaiduchek.maksym.api.services.interfaces;
 
+import gaiduchek.maksym.api.dto.products.FilterCategoryDto;
 import gaiduchek.maksym.api.dto.products.FilterDto;
 import gaiduchek.maksym.api.model.Filter;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface FilterService {
@@ -16,4 +18,6 @@ public interface FilterService {
     Filter update(Long id, FilterDto filterDto);
 
     void delete(Long id);
+
+    List<FilterCategoryDto> getAll(List<Long> selectedFilterIds, List<Long> excludedFilterCategoriesIds);
 }
