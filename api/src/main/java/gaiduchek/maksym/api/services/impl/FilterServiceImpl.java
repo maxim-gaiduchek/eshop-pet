@@ -50,9 +50,18 @@ public class FilterServiceImpl implements FilterService {
         checkCreationPossibility(filterDto);
         var filter = filterMapper.toEntity(filterDto);
         filter.setDeleted(false);
+        filter.setExclude(false);
         enrichWithResponsible(filter);
         enrichWithCategory(filter, filterDto.getFilterCategoryId());
         return filterRepository.save(filter);
+    }
+
+    private void checkCreationPossibility(FilterDto filterDto) {
+        var name = filterDto.getName();
+        var filterCategoryId = filterDto.getFilterCategoryId();
+        if (filterRepository.existsByNameAndFilterCategoryIdNot(name, filterCategoryId)) {
+            throw new ValidationException(FilterExceptionCodes.FILTER_NAME_ALREADY_EXISTS, name, filterCategoryId);
+        }
     }
 
     private void enrichWithResponsible(Filter filter) {
@@ -67,13 +76,6 @@ public class FilterServiceImpl implements FilterService {
         filter.setFilterCategory(filterCategory);
     }
 
-    private void checkCreationPossibility(FilterDto filterDto) {
-        var name = filterDto.getName();
-        if (filterRepository.existsByName(name)) {
-            throw new ValidationException(FilterExceptionCodes.FILTER_NAME_ALREADY_EXISTS, name);
-        }
-    }
-
     @Override
     public Filter update(Long id, FilterDto filterDto) {
         checkUpdatePossibility(filterDto, id);
@@ -85,8 +87,9 @@ public class FilterServiceImpl implements FilterService {
 
     private void checkUpdatePossibility(FilterDto filterDto, Long id) {
         var name = filterDto.getName();
-        if (filterRepository.existsByNameAndIdNot(name, id)) {
-            throw new ValidationException(FilterExceptionCodes.FILTER_NAME_ALREADY_EXISTS, name);
+        var filterCategoryId = filterDto.getFilterCategoryId();
+        if (filterRepository.existsByNameAndIdNotAndFilterCategoryIdNot(name, id, filterCategoryId)) {
+            throw new ValidationException(FilterExceptionCodes.FILTER_NAME_ALREADY_EXISTS, name, filterCategoryId);
         }
     }
 

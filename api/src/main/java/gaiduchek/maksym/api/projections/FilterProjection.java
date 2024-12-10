@@ -10,5 +10,7 @@ public interface FilterProjection {
 
     FilterCategory getFilterCategory();
 
+    Boolean getExclude();
+
     Long getProductsCount();
 }
