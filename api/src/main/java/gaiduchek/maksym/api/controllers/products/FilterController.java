@@ -49,8 +49,7 @@ public class FilterController {
     }
 
     @GetMapping
-    public List<FilterCategoryDto> getAll(@RequestParam(required = false) List<Long> selectedFilterIds,
-                                          @RequestParam(required = false) List<Long> excludedFilterCategoriesIds) {
-        return filterService.getAll(selectedFilterIds, excludedFilterCategoriesIds);
+    public List<FilterCategoryDto> getAll(@RequestParam(required = false) List<Long> selectedFilterIds) {
+        return filterService.getAll(selectedFilterIds);
     }
 }

@@ -19,5 +19,5 @@ public interface FilterService {
 
     void delete(Long id);
 
-    List<FilterCategoryDto> getAll(List<Long> selectedFilterIds, List<Long> excludedFilterCategoriesIds);
+    List<FilterCategoryDto> getAll(List<Long> selectedFilterIds);
 }

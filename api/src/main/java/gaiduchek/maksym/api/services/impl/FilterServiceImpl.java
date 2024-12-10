@@ -50,7 +50,6 @@ public class FilterServiceImpl implements FilterService {
         checkCreationPossibility(filterDto);
         var filter = filterMapper.toEntity(filterDto);
         filter.setDeleted(false);
-        filter.setExclude(false);
         enrichWithResponsible(filter);
         enrichWithCategory(filter, filterDto.getFilterCategoryId());
         return filterRepository.save(filter);
@@ -59,7 +58,7 @@ public class FilterServiceImpl implements FilterService {
     private void checkCreationPossibility(FilterDto filterDto) {
         var name = filterDto.getName();
         var filterCategoryId = filterDto.getFilterCategoryId();
-        if (filterRepository.existsByNameAndFilterCategoryIdNot(name, filterCategoryId)) {
+        if (filterRepository.existsByNameAndFilterCategoryId(name, filterCategoryId)) {
             throw new ValidationException(FilterExceptionCodes.FILTER_NAME_ALREADY_EXISTS, name, filterCategoryId);
         }
     }
@@ -88,7 +87,7 @@ public class FilterServiceImpl implements FilterService {
     private void checkUpdatePossibility(FilterDto filterDto, Long id) {
         var name = filterDto.getName();
         var filterCategoryId = filterDto.getFilterCategoryId();
-        if (filterRepository.existsByNameAndIdNotAndFilterCategoryIdNot(name, id, filterCategoryId)) {
+        if (filterRepository.existsByNameAndIdNotAndFilterCategoryId(name, id, filterCategoryId)) {
             throw new ValidationException(FilterExceptionCodes.FILTER_NAME_ALREADY_EXISTS, name, filterCategoryId);
         }
     }
@@ -101,7 +100,7 @@ public class FilterServiceImpl implements FilterService {
     }
 
     @Override
-    public List<FilterCategoryDto> getAll(List<Long> selectedFilterIds, List<Long> excludedFilterCategoriesIds) {
+    public List<FilterCategoryDto> getAll(List<Long> selectedFilterIds) {
         return filterRepository.getAllWithCounts(selectedFilterIds).stream()
                 .collect(Collectors.groupingBy(FilterProjection::getFilterCategory))
                 .entrySet()

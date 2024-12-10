@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -37,4 +38,11 @@ public class FilterCategory extends BaseEntity {
     private Boolean deleted;
     @OneToMany(mappedBy = "filterCategory", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Filter> filters;
+
+    public List<Filter> getFilters() {
+        if (filters == null) {
+            filters = new ArrayList<>();
+        }
+        return filters;
+    }
 }

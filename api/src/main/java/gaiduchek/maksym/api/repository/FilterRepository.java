@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface FilterRepository extends JpaRepository<Filter, Long> {
 
-    boolean existsByNameAndFilterCategoryIdNot(String name, Long filterCategoryId);
+    boolean existsByNameAndFilterCategoryId(String name, Long filterCategoryId);
 
-    boolean existsByNameAndIdNotAndFilterCategoryIdNot(String name, Long id, Long filterCategoryId);
+    boolean existsByNameAndIdNotAndFilterCategoryId(String name, Long id, Long filterCategoryId);
 
     @Query("""
             select f.id as id, f.name as name, fc as filterCategory, false as exclude, count(p) as productsCount
