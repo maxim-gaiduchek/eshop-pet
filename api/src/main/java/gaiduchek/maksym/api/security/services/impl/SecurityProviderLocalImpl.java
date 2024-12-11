@@ -21,7 +21,7 @@ public class SecurityProviderLocalImpl implements SecurityProvider {
 
     @Override
     public Long fetchUserId() {
-        return 3L;
+        return 2L;
     }
 
     @Override

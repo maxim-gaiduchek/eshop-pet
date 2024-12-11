@@ -10,6 +10,25 @@ import Search from "antd/lib/input/Search";
 import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
 import {FilterSider} from "../Components/Sider/FilterSider";
 
+const sorts = {
+    "newest": {
+        sortBy: "createdAt",
+        sortDirection: "desc",
+    },
+    "oldest": {
+        sortBy: "createdAt",
+        sortDirection: "asc",
+    },
+    "cheapest": {
+        sortBy: "cost",
+        sortDirection: "asc",
+    },
+    "expensive": {
+        sortBy: "cost",
+        sortDirection: "desc",
+    },
+}
+
 export function ShopPage() {
     document.title = "Products | E-Shop Pet";
     const queryString = window.location.search;
@@ -25,22 +44,12 @@ export function ShopPage() {
     const [name, setName] = useState("");
     const [costMin, setCostMin] = useState(0);
     const [costMax, setCostMax] = useState(999999);
+    const [selectedFilters, setSelectedFilters] = useState([])
     const setSort = (value) => {
-        console.log(value);
-        if (value === "newest") {
-            setSortBy("createdAt");
-            setSortDirection("desc");
-        } else if (value === "oldest") {
-            setSortBy("createdAt");
-            setSortDirection("asc");
-        } else if (value === "cheapest") {
-            setSortBy("cost");
-            setSortDirection("asc");
-        } else if (value === "expensive") {
-            setSortBy("cost");
-            setSortDirection("desc");
-        }
-    }
+        const sort = sorts[value];
+        setSortBy(sort.sortBy);
+        setSortDirection(sort.sortDirection);
+    };
     const onTablePaginationChange = (page, pageSize) => {
         setPage(page);
         setPageSize(pageSize);
@@ -51,6 +60,7 @@ export function ShopPage() {
             deleted: [false],
             costMin: costMin,
             costMax: costMax,
+            filterIds: selectedFilters.map(filter => filter.id),
             sortBy: sortBy,
             sortDirection: sortDirection,
         })
@@ -63,17 +73,19 @@ export function ShopPage() {
                 setProducts([]);
                 setPage(1);
             })
-    }, [name, costMin, costMax, sortBy, sortDirection, page, pageSize]);
+    }, [name, costMin, costMax, selectedFilters, sortBy, sortDirection, page, pageSize]);
     return (
         <MainLayout>
             <Sider style={{
-                height: "100%",
+                maxHeight: "100%",
                 backgroundColor: secondaryBackgroundColor,
-                overflowY: "hidden",
+                overflowX: "hidden",
+                overflowY: "auto",
                 padding: "10px 10px",
             }}>
                 <MenuButtons/>
-                <FilterSider costMin={costMin} setCostMin={setCostMin} costMax={costMax} setCostMax={setCostMax}/>
+                <FilterSider costMin={costMin} setCostMin={setCostMin} costMax={costMax} setCostMax={setCostMax}
+                             selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}/>
             </Sider>
             <Flex style={{
                 height: "100%",

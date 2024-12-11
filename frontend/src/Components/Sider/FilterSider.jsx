@@ -1,4 +1,4 @@
-import {Flex, InputNumber, Slider, Tree, TreeNodeProps} from "antd";
+import {Flex, InputNumber, Slider, Tree} from "antd";
 import {useEffect, useState} from "react";
 import {getProducts} from "../../Services/ProductService";
 import {getFilters} from "../../Services/FilterService";
@@ -30,7 +30,7 @@ const setupRange = (min, max, setMin, setMax, defaultValue = 0) => {
     }
 }
 
-export function FilterSider({costMin, setCostMin, costMax, setCostMax, setSelectedFilters}) {
+export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedFilters, setSelectedFilters}) {
     const [maxPrice, setMaxPrice] = useState(999_999);
     const [filters, setFilters] = useState([]);
     const [filterData, setFilterData] = useState({});
@@ -62,13 +62,24 @@ export function FilterSider({costMin, setCostMin, costMax, setCostMax, setSelect
                 key: category.id,
                 children: category.filters.map(filter => {
                     return {
-                        title: filter.name,
+                        title: (
+                            <span>{filter.name} <span>({filter.productsCount})</span></span>
+                        ),
                         key: category.id + "-" + filter.id,
                     }
                 })
             }
         }));
     }, [filters]);
+    const onFilterCheck = (checkedKeys) => {
+        const newSelectedFilters = checkedKeys
+            .filter(key => typeof key === "string")
+            .map(key => +key.split("-")[1])
+            .map(filterId => filters
+                .flatMap(category => category.filters)
+                .find(filter => filter.id === filterId));
+        setSelectedFilters(newSelectedFilters);
+    };
     return (
         <Flex style={{
             height: "100%",
@@ -104,29 +115,11 @@ export function FilterSider({costMin, setCostMin, costMax, setCostMax, setSelect
                             setupData(fromPercentsToAmount(values[1], maxPrice), setCostMax, 0);
                         }}
                         style={{width: "80%"}}/>
-                {/*{
-                    filterData.length ? (
-                        <Tree checkable defaultExpandedKeys={filters.map(category => category.id)}
-                            // onSelect={onSelect}
-                            // onCheck={onCheck}
-                              treeData={filterData}
-                              style={{backgroundColor: secondaryBackgroundColor}}
-                        >
-                            {
-                                filterData.map(data => (
-                                    <Tree.TreeNode />
-                                ))
-                            }
-                        </Tree>
-                    ) : (
-                        ""
-                    )
-                }*/}
                 {
                     filterData.length ? (
                         <Tree checkable defaultExpandedKeys={filters.map(category => category.id)}
-                            // onSelect={onSelect}
-                            // onCheck={onCheck}
+                              defaultCheckedKeys={selectedFilters.map(filter => filter.filterCategoryId + "-" + filter.id)}
+                              onCheck={onFilterCheck}
                               treeData={filterData}
                               style={{backgroundColor: secondaryBackgroundColor}}
                         />
