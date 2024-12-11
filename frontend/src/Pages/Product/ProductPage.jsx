@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {getProduct} from "../../Services/ProductService";
 import {Col, Rate, Row} from "antd";
 import {mockProduct} from "../../mock";
+import {Comment} from "../../Components/Product/Comment";
 
 export function ProductPage() {
     document.title = "Product | E-Shop Pet";
@@ -31,15 +32,15 @@ export function ProductPage() {
                         <span>| by: {product.company.name}</span>
                     </div>
                     <h4 className={'productTitle'}>&euro;{product.cost}</h4>
-                    {/*<Rate allowHalf defaultValue={2.5} disabled style={{
+                    <Rate allowHalf defaultValue={2.5} disabled style={{
                         margin: "10px 0"
-                    }}/><br/><br/>*/}
+                    }}/><br/><br/>
                     <div className={"productDescription"}>
                         {product.description}
                     </div>
                 </Col>
             </Row>
-            {/*<div className={'commentsContainer'}>
+            <div className={'commentsContainer'}>
                 <h4>Reviews</h4>
                 <div className={"reviewContainer"}>
                     <span style={{fontSize: 16}}>Leave a review</span>
@@ -53,7 +54,7 @@ export function ProductPage() {
                 <Comment/>
                 <Comment/>
                 <Comment/>
-            </div>*/}
+            </div>
         </div>
     )
 }

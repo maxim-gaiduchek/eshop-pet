@@ -63,7 +63,7 @@ export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedF
                 children: category.filters.map(filter => {
                     return {
                         title: (
-                            <span>{filter.name} <span>({filter.productsCount})</span></span>
+                            <span>{filter.name} <span color={"#c1c1c1"}>({filter.productsCount})</span></span>
                         ),
                         key: category.id + "-" + filter.id,
                     }
