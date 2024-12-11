@@ -2,12 +2,13 @@ import {MainLayout} from "../Components/Layouts/MainLayout";
 import {useEffect, useState} from "react";
 import {getProducts} from "../Services/ProductService";
 import {ProductItem} from "../Components/Product/ProductItem";
-import {Flex, InputNumber, Pagination, Select} from "antd"
+import {Flex, Pagination, Select} from "antd"
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../colors";
 import {MenuButtons} from "../Components/Sider/MenuButtons";
 import Search from "antd/lib/input/Search";
 import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
+import {FilterSider} from "../Components/Sider/FilterSider";
 
 export function ShopPage() {
     document.title = "Products | E-Shop Pet";
@@ -44,12 +45,6 @@ export function ShopPage() {
         setPage(page);
         setPageSize(pageSize);
     };
-    const setupData = (value, setter, defaultValue) => {
-        if (!value) {
-            value = defaultValue;
-        }
-        setter(value);
-    }
     useEffect(() => {
         getProducts(page, pageSize, {
             name: name,
@@ -78,16 +73,7 @@ export function ShopPage() {
                 padding: "10px 10px",
             }}>
                 <MenuButtons/>
-                <h3>Filters</h3>
-                <Flex style={{
-                    flexDirection: "column",
-                }}>
-                    <h4>Price</h4>
-                    <p>From: <InputNumber value={costMin} min={0}
-                                          onChange={value => setupData(value, setCostMin, 0)}/></p>
-                    <p>To: <InputNumber value={costMax} min={0}
-                                        onChange={value => setupData(value, setCostMax, 0)}/></p>
-                </Flex>
+                <FilterSider costMin={costMin} setCostMin={setCostMin} costMax={costMax} setCostMax={setCostMax}/>
             </Sider>
             <Flex style={{
                 height: "100%",

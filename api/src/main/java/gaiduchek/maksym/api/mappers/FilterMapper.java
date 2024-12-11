@@ -18,7 +18,6 @@ public interface FilterMapper {
     @Mapping(target = "filterCategoryId", source = "filterCategory.id")
     FilterDto toDto(Filter filter);
 
-    @Mapping(target = "filterCategoryId", source = "filterCategory.id")
     FilterDto toDto(FilterProjection filterProjection);
 
     List<FilterDto> toDtos(List<Filter> filters);

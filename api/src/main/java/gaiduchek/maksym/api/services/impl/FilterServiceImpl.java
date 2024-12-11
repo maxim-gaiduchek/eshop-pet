@@ -17,9 +17,12 @@ import gaiduchek.maksym.api.services.interfaces.AdministratorService;
 import gaiduchek.maksym.api.services.interfaces.FilterCategoryService;
 import gaiduchek.maksym.api.services.interfaces.FilterService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -101,11 +104,26 @@ public class FilterServiceImpl implements FilterService {
 
     @Override
     public List<FilterCategoryDto> getAll(List<Long> selectedFilterIds) {
-        return filterRepository.getAllWithCounts(selectedFilterIds).stream()
-                .collect(Collectors.groupingBy(FilterProjection::getFilterCategory))
+        if (selectedFilterIds == null) {
+            selectedFilterIds = new ArrayList<>();
+        }
+        var filters = filterRepository.getAllWithCounts(selectedFilterIds);
+        var filterCategoryNames = filters.stream()
+                .map(filter -> Pair.of(filter.getFilterCategoryId(), filter.getFilterCategoryName()))
+                .distinct()
+                .collect(Collectors.toMap(Pair::getLeft, Pair::getRight));
+        return filters.stream()
+                .collect(Collectors.groupingBy(FilterProjection::getFilterCategoryId))
                 .entrySet()
                 .stream()
-                .map(entry -> filterCategoryMapper.toDto(entry.getKey(), entry.getValue()))
+                .map(entry -> buildCategory(entry, filterCategoryNames))
                 .toList();
+    }
+
+    private FilterCategoryDto buildCategory(Map.Entry<Long, List<FilterProjection>> entry,
+                                            Map<Long, String> filterCategoryNames) {
+        var categoryId = entry.getKey();
+        var categoryName = filterCategoryNames.get(categoryId);
+        return filterCategoryMapper.toDto(categoryId, categoryName, entry.getValue());
     }
 }

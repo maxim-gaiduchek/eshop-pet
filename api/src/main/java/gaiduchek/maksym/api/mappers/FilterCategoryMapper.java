@@ -23,7 +23,7 @@ public interface FilterCategoryMapper {
     @Named("toFilterCategoryWithResponsibleDto")
     FilterCategoryDto toDtoWithResponsible(FilterCategory filterCategory);
 
-    FilterCategoryDto toDto(FilterCategory filterCategory, List<FilterProjection> filters);
+    FilterCategoryDto toDto(Long id, String name, List<FilterProjection> filters);
 
     @IterableMapping(qualifiedByName = "toFilterCategoryDto")
     List<FilterCategoryDto> toDtos(List<FilterCategory> filterCategories);
