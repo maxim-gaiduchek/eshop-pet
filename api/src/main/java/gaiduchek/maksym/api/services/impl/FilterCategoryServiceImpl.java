@@ -15,6 +15,7 @@ import gaiduchek.maksym.api.services.interfaces.FilterCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,11 @@ public class FilterCategoryServiceImpl implements FilterCategoryService {
     public FilterCategory getByIdOrThrow(Long id) {
         return findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(FilterCategoryExceptionCodes.FILTER_CATEGORY_DOES_NOT_EXIST, id));
+    }
+
+    @Override
+    public List<FilterCategory> findAll() {
+        return filterCategoryRepository.findAll();
     }
 
     @Override
@@ -79,6 +85,7 @@ public class FilterCategoryServiceImpl implements FilterCategoryService {
     public void delete(Long id) {
         var filterCategory = getByIdOrThrow(id);
         filterCategory.setDeleted(true);
+        filterCategory.getFilters().forEach(filter -> filter.setDeleted(true));
         filterCategoryRepository.save(filterCategory);
     }
 }

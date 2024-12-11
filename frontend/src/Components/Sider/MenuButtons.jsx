@@ -13,6 +13,9 @@ export function MenuButtons() {
             {
                 role && role === "ROLE_ADMINISTRATOR" ?
                     <>
+                        <Link to={"/settings"} style={{width: "100%", margin: "10px 0"}}>
+                            <Button style={{width: "100%"}}>Settings</Button>
+                        </Link>
                         <Link to={"/sellers"} style={{width: "100%", margin: "10px 0"}}>
                             <Button style={{width: "100%"}}>Sellers</Button>
                         </Link>

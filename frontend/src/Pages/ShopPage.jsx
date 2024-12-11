@@ -64,12 +64,6 @@ export function ShopPage() {
                 setPage(productPage.currentPage);
                 setTotal(productPage.totalMatches);
             })
-            /*.then(() => {
-                setProducts(mockProducts);
-                setPage(1);
-                setPageSize(10);
-                setTotal(mockProducts.length);
-            })*/
             .catch(() => {
                 setProducts([]);
                 setPage(1);

@@ -1,5 +1,6 @@
 package gaiduchek.maksym.api.dto.products;
 
+import gaiduchek.maksym.api.dto.users.UserBaseInfoDto;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,5 +20,7 @@ public class FilterCategoryDto {
     private Long id;
     @NotEmpty(message = "Filter category's name must not be empty")
     private String name;
+    private UserBaseInfoDto responsible;
     private List<FilterDto> filters;
+    private Boolean deleted;
 }

@@ -21,7 +21,7 @@ spring:
   datasource:
     username: 'postgres'
     password: 'postgres'
-    url: 'jdbc:postgresql://localhost:5432/postgres'
+    url: 'jdbc:postgresql://localhost:5432/eshop-pet-db'
     name: 'e-shop-pet'
   jpa:
     show-sql: true
@@ -41,7 +41,7 @@ spring:
     validate-on-migrate: false
     user: 'postgres'
     password: 'postgres'
-    url: 'jdbc:postgresql://localhost:5432/postgres'
+    url: 'jdbc:postgresql://localhost:5432/eshop-pet-db'
     out-of-order: true
 
 server:

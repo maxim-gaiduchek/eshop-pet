@@ -20,6 +20,6 @@ public class FilterDto {
     private String name;
     @NotNull(message = "Filter's category id must not be null")
     private Long filterCategoryId;
-    private Boolean exclude;
     private Long productsCount;
+    private Boolean deleted;
 }

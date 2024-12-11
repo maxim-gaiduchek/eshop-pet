@@ -1,14 +1,14 @@
-import {MainLayout} from "../Components/Layouts/MainLayout";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
 import {useNavigate} from "react-router-dom";
 import {Input} from "antd";
-import {SubmitButton} from "../Components/Buttons/SubmitButton";
-import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
+import {SubmitButton} from "../../Components/Buttons/SubmitButton";
+import {CenteredLayout} from "../../Components/Layouts/CenteredLayout";
 import {useState} from "react";
-import {createSeller} from "../Services/SellerService";
+import {createSeller} from "../../Services/SellerService";
 import {toast} from "react-toastify";
 import Sider from "antd/lib/layout/Sider";
-import {secondaryBackgroundColor} from "../colors";
-import {MenuButtons} from "../Components/Sider/MenuButtons";
+import {secondaryBackgroundColor} from "../../colors";
+import {MenuButtons} from "../../Components/Sider/MenuButtons";
 
 export function SellerCreationPage() {
     document.title = "New seller | Administrator | E-Shop Pet";

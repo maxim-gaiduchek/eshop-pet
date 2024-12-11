@@ -1,16 +1,16 @@
-import {MainLayout} from "../Components/Layouts/MainLayout";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
 import {useNavigate} from "react-router-dom";
 import {Input, InputNumber, Select} from "antd";
-import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
+import {CenteredLayout} from "../../Components/Layouts/CenteredLayout";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import {createProducts} from "../Services/ProductService";
+import {createProducts} from "../../Services/ProductService";
 import TextArea from "antd/lib/input/TextArea";
-import {SubmitButton} from "../Components/Buttons/SubmitButton";
-import {getCompanies} from "../Services/CompanyService";
+import {SubmitButton} from "../../Components/Buttons/SubmitButton";
+import {getCompanies} from "../../Services/CompanyService";
 import Sider from "antd/lib/layout/Sider";
-import {secondaryBackgroundColor} from "../colors";
-import {MenuButtons} from "../Components/Sider/MenuButtons";
+import {secondaryBackgroundColor} from "../../colors";
+import {MenuButtons} from "../../Components/Sider/MenuButtons";
 
 export function ProductCreationPage() {
     document.title = "New product | Seller | E-Shop Pet";

@@ -1,13 +1,13 @@
 import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getCompany} from "../Services/CompanyService";
-import {MainLayout} from "../Components/Layouts/MainLayout";
+import {getCompany} from "../../Services/CompanyService";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
 import {Button, Flex, Table} from "antd";
-import {deleteProduct, getProducts} from "../Services/ProductService";
+import {deleteProduct, getProducts} from "../../Services/ProductService";
 import {DeleteOutlined, LinkOutlined} from "@ant-design/icons";
 import Sider from "antd/lib/layout/Sider";
-import {secondaryBackgroundColor} from "../colors";
-import {MenuButtons} from "../Components/Sider/MenuButtons";
+import {secondaryBackgroundColor} from "../../colors";
+import {MenuButtons} from "../../Components/Sider/MenuButtons";
 
 const productColumns = [
     {
@@ -102,12 +102,6 @@ export function CompanyPage() {
                 setPage(productPage.currentPage);
                 setTotal(productPage.totalMatches);
             })
-            /*.then(() => {
-                setProducts(mockProducts);
-                setPage(1);
-                setPageSize(10);
-                setTotal(mockProducts.length);
-            })*/
             .catch(() => {
                 setLoading(false);
                 setProducts([]);
@@ -123,7 +117,8 @@ export function CompanyPage() {
     useEffect(() => {
         fetchProducts();
     }, [company, page, pageSize]);
-    const deleteCompanyProduct = (id) => {
+    const deleteCompanyProduct = (id, e) => {
+        e.target.disabled = true;
         deleteProduct(id)
             .then(() => {
                 const newProducts = products.map(product => {
@@ -133,11 +128,13 @@ export function CompanyPage() {
                     return product;
                 })
                 setProducts(newProducts);
-            });
+            })
+            .catch(() => e.target.disabled = false);
     }
     const columns = productColumns.concat({
-        render: (_, {id}) => (
-            <Button color="danger" variant="solid" onClick={() => deleteCompanyProduct(id)}>
+        render: (_, {id, deleted}) => (
+            <Button color="danger" variant="solid" disabled={deleted}
+                    onClick={(e) => deleteCompanyProduct(id, e)}>
                 <DeleteOutlined/>
             </Button>
         )

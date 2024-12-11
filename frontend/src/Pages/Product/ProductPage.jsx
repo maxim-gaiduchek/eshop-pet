@@ -1,8 +1,8 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
-import {getProduct} from "../Services/ProductService";
+import {getProduct} from "../../Services/ProductService";
 import {Col, Rate, Row} from "antd";
-import {mockProduct} from "../mock";
+import {mockProduct} from "../../mock";
 
 export function ProductPage() {
     document.title = "Product | E-Shop Pet";
