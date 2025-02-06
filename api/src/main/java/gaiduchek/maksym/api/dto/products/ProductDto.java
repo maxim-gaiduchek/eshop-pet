@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,10 +26,10 @@ import java.math.BigDecimal;
 public class ProductDto {
 
     private Long id;
-    @NotEmpty(message = "Product name must not be empty", groups = {CreateGroup.class, UpdateGroup.class})
+    @NotEmpty(message = "Product name must not be empty", groups = {CreateGroup.class})
     private String name;
     private String description;
-    @NotNull(message = "Product company must not be null", groups = {CreateGroup.class, UpdateGroup.class})
+    @NotNull(message = "Product company must not be null", groups = {CreateGroup.class})
     @ConvertGroup(from = CreateGroup.class, to = UsedInOtherGroup.class)
     @Valid
     private BaseInfoDto company;
@@ -39,4 +40,7 @@ public class ProductDto {
     @Positive(message = "Product count must be positive", groups = {CreateGroup.class, UpdateGroup.class})
     private Integer count;
     private Boolean deleted;
+    @ConvertGroup(from = UpdateGroup.class, to = UsedInOtherGroup.class)
+    @Valid
+    private List<FilterDto> filters;
 }

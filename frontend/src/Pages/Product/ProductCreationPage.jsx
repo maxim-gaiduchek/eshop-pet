@@ -4,7 +4,7 @@ import {Input, InputNumber, Select} from "antd";
 import {CenteredLayout} from "../../Components/Layouts/CenteredLayout";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
-import {createProducts} from "../../Services/ProductService";
+import {createProduct} from "../../Services/ProductService";
 import TextArea from "antd/lib/input/TextArea";
 import {SubmitButton} from "../../Components/Buttons/SubmitButton";
 import {getCompanies} from "../../Services/CompanyService";
@@ -25,10 +25,10 @@ export function ProductCreationPage() {
     const createOnClick = async (e) => {
         e.preventDefault();
         setDisabled(true);
-        createProducts(productName, productDescription, productCost, productCount, productCompanyId)
+        createProduct(productName, productDescription, productCost, productCount, productCompanyId)
             .then(createdProduct => {
                 toast("New product successfully created!");
-                navigate("/companies/" + createdProduct.company.id);
+                navigate("/products/" + createdProduct.id);
             })
             .catch(() => {
                 setDisabled(false);

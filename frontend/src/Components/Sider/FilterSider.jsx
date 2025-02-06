@@ -30,10 +30,10 @@ const setupRange = (min, max, setMin, setMax, defaultValue = 0) => {
     }
 }
 
-export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedFilters, setSelectedFilters}) {
+export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedFilters, setSelectedFilters, toSetCostMax}) {
     const [maxPrice, setMaxPrice] = useState(999_999);
     const [filters, setFilters] = useState([]);
-    const [filterData, setFilterData] = useState({});
+    const [filterData, setFilterData] = useState([]);
     const marks = {
         0: "0",
         100: maxPrice,
@@ -47,7 +47,7 @@ export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedF
             .then(productPage => {
                 if (productPage && productPage.products && productPage.products.length !== 0) {
                     setMaxPrice(productPage.products[0].cost);
-                    setCostMax(productPage.products[0].cost);
+                    if (toSetCostMax) setCostMax(productPage.products[0].cost);
                 }
             })
     }, []);
@@ -73,11 +73,8 @@ export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedF
     }, [filters]);
     const onFilterCheck = (checkedKeys) => {
         const newSelectedFilters = checkedKeys
-            .filter(key => typeof key === "string")
-            .map(key => +key.split("-")[1])
-            .map(filterId => filters
-                .flatMap(category => category.filters)
-                .find(filter => filter.id === filterId));
+                .filter(key => typeof key === "string")
+                .map(key => +key.split("-")[1]);
         setSelectedFilters(newSelectedFilters);
     };
     return (
@@ -118,7 +115,10 @@ export function FilterSider({costMin, setCostMin, costMax, setCostMax, selectedF
                 {
                     filterData.length ? (
                         <Tree checkable defaultExpandedKeys={filters.map(category => category.id)}
-                              defaultCheckedKeys={selectedFilters.map(filter => filter.filterCategoryId + "-" + filter.id)}
+                              defaultCheckedKeys={filters
+                                  .flatMap(category => category.filters)
+                                  .filter(filter => selectedFilters.includes(filter.id))
+                                  .map(filter => filter.filterCategoryId + "-" + filter.id)}
                               onCheck={onFilterCheck}
                               treeData={filterData}
                               style={{backgroundColor: secondaryBackgroundColor}}

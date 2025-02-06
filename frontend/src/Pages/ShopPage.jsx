@@ -33,18 +33,30 @@ export function ShopPage() {
     document.title = "Products | E-Shop Pet";
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
+    const sortByParam = urlParams.get("sortBy");
+    const sortDirectionParam = urlParams.get("sortDirection");
+    const nameParam = urlParams.get("name");
+    const costMinParam = urlParams.get("costMin");
+    const costMaxParam = urlParams.get("costMax");
+    const selectedFiltersParam = urlParams.get("selectedFilters");
     const pageParam = urlParams.get("page");
     const pageSizeParam = urlParams.get("pageSize");
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(pageParam ? +pageParam : 1);
     const [pageSize, setPageSize] = useState(pageSizeParam ? +pageSizeParam : 10);
     const [total, setTotal] = useState(products.length);
-    const [sortBy, setSortBy] = useState("createdAt");
-    const [sortDirection, setSortDirection] = useState("desc");
-    const [name, setName] = useState("");
-    const [costMin, setCostMin] = useState(0);
-    const [costMax, setCostMax] = useState(999999);
-    const [selectedFilters, setSelectedFilters] = useState([])
+    const [sortBy, setSortBy] = useState(sortByParam ? sortByParam : "createdAt");
+    const [sortDirection, setSortDirection] = useState(sortDirectionParam ? sortDirectionParam : "desc");
+    const [name, setName] = useState(nameParam ? nameParam : "");
+    const [costMin, setCostMin] = useState(costMinParam ? +costMinParam : 0);
+    const [costMax, setCostMax] = useState(costMaxParam ? +costMaxParam : 999_999);
+    const [selectedFilters, setSelectedFilters] = useState(selectedFiltersParam ? selectedFiltersParam
+        .split(",").map(Number) : [])
+    const getSort = () => {
+        let sort = Object.entries(sorts)
+            .filter(([_, sort]) => sort.sortBy === sortBy && sort.sortDirection === sortDirection);
+        return sort.length > 0 ? sort[0][0] : "newest"
+    };
     const setSort = (value) => {
         const sort = sorts[value];
         setSortBy(sort.sortBy);
@@ -55,12 +67,13 @@ export function ShopPage() {
         setPageSize(pageSize);
     };
     useEffect(() => {
+        changePath(name, costMin, costMax, selectedFilters, sortBy, sortDirection, page, pageSize);
         getProducts(page, pageSize, {
             name: name,
             deleted: [false],
             costMin: costMin,
             costMax: costMax,
-            filterIds: selectedFilters.map(filter => filter.id),
+            filterIds: selectedFilters,
             sortBy: sortBy,
             sortDirection: sortDirection,
         })
@@ -85,7 +98,8 @@ export function ShopPage() {
             }}>
                 <MenuButtons/>
                 <FilterSider costMin={costMin} setCostMin={setCostMin} costMax={costMax} setCostMax={setCostMax}
-                             selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}/>
+                             selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters}
+                             toSetCostMax={!costMaxParam}/>
             </Sider>
             <Flex style={{
                 height: "100%",
@@ -110,15 +124,15 @@ export function ShopPage() {
                         flexWrap: "nowrap",
                         width: "50%"
                     }}>
-                        <Select placeholder={"Newest"} onSelect={value => setSort(value)}
+                        <Select placeholder={"Newest"} value={getSort()} onSelect={value => setSort(value)}
                                 options={[
                                     {label: "Newest", value: "newest"},
                                     {label: "Oldest", value: "oldest"},
                                     {label: "Cheapest", value: "cheapest"},
                                     {label: "Expensive", value: "expensive"},
                                 ]} style={{width: "50%", margin: "10px 10px"}}/>
-                        <Search placeholder={"Search name..."} allowClear={true}
-                                onSearch={value => setName(value)}
+                        <Search placeholder={"Search name..."} value={name} allowClear={true}
+                                onChange={e => setName(e.target.value)}
                                 style={{width: "50%", margin: "10px 10px"}}/>
                     </Flex>
                 </Flex>
@@ -141,4 +155,34 @@ export function ShopPage() {
             </Flex>
         </MainLayout>
     )
+}
+
+function changePath(name, costMin, costMax, selectedFilters, sortBy, sortDirection, page, pageSize) {
+    let params = new URLSearchParams();
+    if (name) {
+        params.set("name", name);
+    }
+    if (costMin) {
+        params.set("costMin", costMin);
+    }
+    if (costMax) {
+        params.set("costMax", costMax);
+    }
+    if (selectedFilters.length > 0) {
+        params.set("selectedFilters", selectedFilters.join(","));
+    }
+    if (sortBy) {
+        params.set("sortBy", sortBy);
+    }
+    if (sortDirection) {
+        params.set("sortDirection", sortDirection);
+    }
+    if (page) {
+        params.set("page", page);
+    }
+    if (pageSize) {
+        params.set("pageSize", pageSize);
+    }
+    const newUrl = `/shop?${params.toString()}`;
+    window.history.replaceState(null, "", newUrl);
 }

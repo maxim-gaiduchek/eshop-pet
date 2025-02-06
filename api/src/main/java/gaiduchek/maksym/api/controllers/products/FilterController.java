@@ -4,9 +4,11 @@ import gaiduchek.maksym.api.dto.products.FilterCategoryDto;
 import gaiduchek.maksym.api.dto.products.FilterDto;
 import gaiduchek.maksym.api.mappers.FilterMapper;
 import gaiduchek.maksym.api.services.interfaces.FilterService;
-import jakarta.validation.Valid;
+import gaiduchek.maksym.api.validation.groups.CreateGroup;
+import gaiduchek.maksym.api.validation.groups.UpdateGroup;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +31,7 @@ public class FilterController {
 
     @PostMapping
     @PreAuthorize("@accessService.isAdministrator()")
-    public FilterDto create(@RequestBody @Valid FilterDto filterDto) {
+    public FilterDto create(@RequestBody @Validated(CreateGroup.class) FilterDto filterDto) {
         var filter = filterService.create(filterDto);
         return filterMapper.toDto(filter);
     }
@@ -37,7 +39,7 @@ public class FilterController {
     @PutMapping("/{id}")
     @PreAuthorize("@accessService.isAdministrator()")
     public FilterDto update(@PathVariable Long id,
-                            @RequestBody @Valid FilterDto filterDto) {
+                            @RequestBody @Validated(UpdateGroup.class) FilterDto filterDto) {
         var filter = filterService.update(id, filterDto);
         return filterMapper.toDto(filter);
     }

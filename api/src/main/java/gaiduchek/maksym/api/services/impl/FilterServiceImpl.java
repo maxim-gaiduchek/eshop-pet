@@ -9,6 +9,7 @@ import gaiduchek.maksym.api.exceptions.exceptioncodes.AccessExceptionCodes;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.FilterExceptionCodes;
 import gaiduchek.maksym.api.mappers.FilterCategoryMapper;
 import gaiduchek.maksym.api.mappers.FilterMapper;
+import gaiduchek.maksym.api.model.BaseEntity;
 import gaiduchek.maksym.api.model.Filter;
 import gaiduchek.maksym.api.projections.FilterProjection;
 import gaiduchek.maksym.api.repository.FilterRepository;
@@ -46,6 +47,19 @@ public class FilterServiceImpl implements FilterService {
     public Filter getByIdOrThrow(Long id) {
         return findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(FilterExceptionCodes.FILTER_DOES_NOT_EXIST, id));
+    }
+
+    @Override
+    public List<Filter> getAllByIds(List<Long> ids) {
+        var filters = filterRepository.findAllById(ids);
+        var filterIds = filters.stream().map(BaseEntity::getId).collect(Collectors.toSet());
+        ids.stream()
+                .filter(id -> !filterIds.contains(id))
+                .findAny()
+                .ifPresent(id -> {
+                    throw new EntityNotFoundException(FilterExceptionCodes.FILTER_DOES_NOT_EXIST, id);
+                });
+        return filters;
     }
 
     @Override
@@ -116,6 +130,7 @@ public class FilterServiceImpl implements FilterService {
                 .collect(Collectors.groupingBy(FilterProjection::getFilterCategoryId))
                 .entrySet()
                 .stream()
+                .sorted(Map.Entry.comparingByKey())
                 .map(entry -> buildCategory(entry, filterCategoryNames))
                 .toList();
     }

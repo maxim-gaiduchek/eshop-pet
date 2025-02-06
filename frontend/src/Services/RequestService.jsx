@@ -102,6 +102,20 @@ export async function postRequest(url, body, jsonResponse = true) {
         })
 }
 
+export async function putRequest(url, body, jsonResponse = true) {
+    const headers = buildHeaders();
+    headers.set("Content-Type", "application/json");
+    return fetch(url, {
+        method: "PUT",
+        body: JSON.stringify(body),
+        credentials: "include",
+        headers: headers,
+    })
+        .then(response => {
+            return handleResponse(response, jsonResponse, () => putRequest(url, body, jsonResponse))
+        })
+}
+
 export async function deleteRequest(url, jsonResponse = true) {
     return fetch(url, {
         method: "DELETE",

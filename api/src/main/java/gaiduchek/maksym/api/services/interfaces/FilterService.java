@@ -13,6 +13,8 @@ public interface FilterService {
 
     Filter getByIdOrThrow(Long id);
 
+    List<Filter> getAllByIds(List<Long> ids);
+
     Filter create(FilterDto filterDto);
 
     Filter update(Long id, FilterDto filterDto);

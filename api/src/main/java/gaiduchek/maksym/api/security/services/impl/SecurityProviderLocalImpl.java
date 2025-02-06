@@ -32,7 +32,7 @@ public class SecurityProviderLocalImpl implements SecurityProvider {
                 .surname("Admin")
                 .email("test@gmail.com")
                 .phone("+420607777777")
-                .role(Role.ROLE_ADMINISTRATOR)
+                .role(Role.ROLE_SELLER)
                 .build();
     }
 }
