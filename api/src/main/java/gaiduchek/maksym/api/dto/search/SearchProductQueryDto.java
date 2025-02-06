@@ -19,8 +19,8 @@ public class SearchProductQueryDto extends BaseSearchQueryDto {
     private String name;
     private BigDecimal costMin;
     private BigDecimal costMax;
-    private List<Integer> companyIds;
-    private List<Integer> productCategoryIds;
-    private List<Integer> filterIds;
+    private List<Long> companyIds;
+    private List<Long> productCategoryIds;
+    private List<Long> filterIds;
     private List<Boolean> deleted;
 }

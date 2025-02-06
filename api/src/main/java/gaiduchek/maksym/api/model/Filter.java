@@ -24,8 +24,10 @@ public class Filter extends BaseEntity {
     private String name;
     @ManyToOne
     @JoinColumn(name = "responsible_id")
-    private Manager responsible;
+    private Administrator responsible;
     @ManyToOne
     @JoinColumn(name = "filter_category_id")
     private FilterCategory filterCategory;
+    @Column(name = "deleted")
+    private Boolean deleted;
 }

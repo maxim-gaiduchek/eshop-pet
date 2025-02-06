@@ -1,4 +1,4 @@
-import {deleteRequest, getRequest, postRequest} from "./RequestService";
+import {deleteRequest, getRequest, postRequest, putRequest} from "./RequestService";
 import {apiUrl} from "../config";
 
 export async function getProduct(id) {
@@ -13,7 +13,7 @@ export async function getProducts(page = 1, pageSize = 10, queryParams = {}) {
     });
 }
 
-export async function createProducts(name, description, cost, count, companyId) {
+export async function createProduct(name, description, cost, count, companyId) {
     return postRequest(apiUrl + "/products", {
         name: name,
         description: description,
@@ -21,7 +21,18 @@ export async function createProducts(name, description, cost, count, companyId) 
         count: count,
         company: {
             id: companyId,
-        },
+        }
+    });
+}
+
+export async function updateProduct(id, description, cost, count, filterIds) {
+    return putRequest(apiUrl + "/products/" + id, {
+        description: description,
+        cost: cost,
+        count: count,
+        filters: filterIds.map(filterId => {
+            return {id: filterId}
+        }),
     });
 }
 

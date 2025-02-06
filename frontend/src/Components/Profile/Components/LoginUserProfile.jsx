@@ -6,13 +6,8 @@ import {LogoutOutlined, UserOutlined} from "@ant-design/icons";
 import {LoginRegisterButtons} from "./LoginRegisterButtons";
 import {logout} from "../../../Services/AuthService";
 
-const defaultUser = {
-    name: "",
-    surname: "",
-};
-
 export function LoginUserProfile() {
-    const [user, setUser] = useState(defaultUser);
+    const [user, setUser] = useState({});
     const loginUserId = localStorage.getItem("loginUserId");
     const navigate = useNavigate();
     useEffect(() => {
@@ -21,12 +16,11 @@ export function LoginUserProfile() {
         }
         getUser(loginUserId)
             .then(user => setUser(user))
-            .catch(() => setUser(defaultUser))
+            .catch(() => localStorage.removeItem("loginUserId"))
     }, []);
     const logoutOnClick = async () => {
         logout()
             .then(() => {
-                setUser(defaultUser);
                 navigate("/shop");
             })
     }

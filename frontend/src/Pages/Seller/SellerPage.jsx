@@ -1,59 +1,56 @@
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Flex, Table} from "antd";
-import {MainLayout} from "../Components/Layouts/MainLayout";
-import {mockSeller} from "../mock";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
+import {mockSeller} from "../../mock";
 import {MailOutlined} from "@ant-design/icons";
-import {companyColumns} from "../table_columns";
-import {getUser} from "../Services/UserService";
-import {MenuButtons} from "../Components/Sider/MenuButtons";
-import {secondaryBackgroundColor} from "../colors";
+import {getCompanies} from "../../Services/CompanyService";
+import {companyColumns} from "../../table_columns";
+import {getSeller} from "../../Services/SellerService";
 import Sider from "antd/lib/layout/Sider";
+import {secondaryBackgroundColor} from "../../colors";
+import {MenuButtons} from "../../Components/Sider/MenuButtons";
 
-export function CustomerPage() {
-    document.title = "User Account | E-Shop Pet";
+export function SellerPage() {
+    document.title = "Seller | E-Shop Pet";
     const {id} = useParams();
-    const [customer, setCustomer] = useState(mockSeller);
-    const navigate = useNavigate();
-    const [purchases, setPurchases] = useState([]);
+    const [seller, setSeller] = useState(mockSeller);
+    const [companies, setCompanies] = useState([]);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [total, setTotal] = useState(purchases.length);
+    const [total, setTotal] = useState(companies.length);
     useEffect(() => {
-        getUser(id)
-            .then(customer => {
-                if (customer.role === "ROLE_SELLER") {
-                    navigate("/sellers/" + customer.id)
-                }
-                setCustomer(customer);
-                document.title = `${customer.name} ${customer.surname} | User Account | E-Shop Pet`;
+        getSeller(id)
+            .then(seller => {
+                setSeller(seller);
+                document.title = `${seller.name} ${seller.surname} | Seller | E-Shop Pet`;
             })
-            .catch(() => setCustomer(mockSeller))
+            .catch(() => setSeller(mockSeller))
     }, []);
-    const fetchPurchases = () => {
-        /*setLoading(true);
+    const fetchCompanies = () => {
+        setLoading(true);
         getCompanies(page, pageSize, {
             sellerIds: [id],
         })
             .then(companyPage => {
                 setLoading(false);
-                setPurchases(companyPage.companies);
+                setCompanies(companyPage.companies);
                 setPage(companyPage.currentPage);
                 setTotal(companyPage.totalMatches);
             })
             .catch(() => {
                 setLoading(false);
-                setPurchases(mockCompanies);
+                setCompanies([]);
                 setPage(1);
-            })*/
+            })
     }
     const onTablePaginationChange = (page, pageSize) => {
         setPage(page);
         setPageSize(pageSize);
     };
     useEffect(() => {
-        fetchPurchases();
+        fetchCompanies();
     }, [page, pageSize]);
     return (
         <MainLayout>
@@ -80,23 +77,25 @@ export function CustomerPage() {
                     width: "100%",
                     flexDirection: "column",
                 }}>
-                    <h1>{customer.name} {customer.surname}</h1>
-                    <p>Phone: {customer.phone}</p>
-                    <p>Email: <Link to={"mailto:" + customer.email}>{customer.email} <MailOutlined/></Link></p>
+                    <h1>{seller.name} {seller.surname}</h1>
+                    <p>Phone: {seller.phone}</p>
+                    <p>Email: <Link to={"mailto:" + seller.email}>{seller.email} <MailOutlined/></Link></p>
+                    <p>Address: {seller.address}</p>
                 </Flex>
                 <Flex style={{
                     width: "100%",
                 }}>
-                    <h1>Purchases</h1>
+                    <h1>Companies</h1>
                 </Flex>
                 <Table
-                    dataSource={[]}
+                    dataSource={companies}
                     columns={companyColumns}
                     pagination={{
                         pageSize: pageSize,
                         total: total,
                         showSizeChanger: true,
                         onChange: onTablePaginationChange,
+                        showTotal: (total) => "Companies: " + total,
                     }}
                     loading={loading}
                     style={{

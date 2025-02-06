@@ -24,5 +24,7 @@ public class ProductCategory extends BaseEntity {
     private String name;
     @ManyToOne
     @JoinColumn(name = "responsible_id")
-    private Manager responsible;
+    private Administrator responsible;
+    @Column(name = "deleted")
+    private Boolean deleted;
 }

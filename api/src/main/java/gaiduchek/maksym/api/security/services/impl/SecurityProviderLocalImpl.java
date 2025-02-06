@@ -21,7 +21,7 @@ public class SecurityProviderLocalImpl implements SecurityProvider {
 
     @Override
     public Long fetchUserId() {
-        return 5L;
+        return 3L;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class SecurityProviderLocalImpl implements SecurityProvider {
                 .surname("Admin")
                 .email("test@gmail.com")
                 .phone("+420607777777")
-                .role(Role.ROLE_CUSTOMER)
+                .role(Role.ROLE_SELLER)
                 .build();
     }
 }

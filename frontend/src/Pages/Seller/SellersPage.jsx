@@ -1,13 +1,13 @@
-import {MainLayout} from "../Components/Layouts/MainLayout";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
 import {Button, Flex, Table} from "antd";
 import {Link} from "react-router-dom";
 import {LinkOutlined, MailOutlined} from "@ant-design/icons";
 import {useEffect, useState} from "react";
-import {getSellers} from "../Services/SellerService";
-import {mockSellers} from "../mock";
+import {getSellers} from "../../Services/SellerService";
+import {mockSellers} from "../../mock";
 import Sider from "antd/lib/layout/Sider";
-import {secondaryBackgroundColor} from "../colors";
-import {MenuButtons} from "../Components/Sider/MenuButtons";
+import {secondaryBackgroundColor} from "../../colors";
+import {MenuButtons} from "../../Components/Sider/MenuButtons";
 
 const columns = [
     {

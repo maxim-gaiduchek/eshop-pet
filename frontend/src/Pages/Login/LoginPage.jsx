@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
-import {login} from "../Services/AuthService";
+import {login} from "../../Services/AuthService";
 import {Link, useNavigate} from "react-router-dom";
 import {Input} from "antd";
-import {MainLayout} from "../Components/Layouts/MainLayout";
-import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
-import {SubmitButton} from "../Components/Buttons/SubmitButton";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
+import {CenteredLayout} from "../../Components/Layouts/CenteredLayout";
+import {SubmitButton} from "../../Components/Buttons/SubmitButton";
 
 export function LoginPage() {
     document.title = "Login | E-Shop Pet";

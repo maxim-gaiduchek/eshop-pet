@@ -1,5 +1,6 @@
 package gaiduchek.maksym.api.services.impl;
 
+import gaiduchek.maksym.api.dto.products.FilterDto;
 import gaiduchek.maksym.api.dto.products.ProductDto;
 import gaiduchek.maksym.api.dto.search.SearchProductDto;
 import gaiduchek.maksym.api.exceptions.EntityNotFoundException;
@@ -10,12 +11,14 @@ import gaiduchek.maksym.api.model.Company;
 import gaiduchek.maksym.api.model.Product;
 import gaiduchek.maksym.api.repository.ProductRepository;
 import gaiduchek.maksym.api.security.services.interfaces.AccessService;
-import gaiduchek.maksym.api.security.services.interfaces.SecurityProvider;
 import gaiduchek.maksym.api.services.interfaces.CompanyService;
+import gaiduchek.maksym.api.services.interfaces.FilterService;
 import gaiduchek.maksym.api.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,9 +27,9 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
-    private final SecurityProvider securityProvider;
     private final CompanyService companyService;
     private final AccessService accessService;
+    private final FilterService filterService;
 
     @Override
     public Optional<Product> findById(Long id) {
@@ -78,12 +81,27 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product update(Long id, ProductDto productDto) {
-        var product = getByIdOrThrow(id);
-        product.setName(productDto.getName());
+        var product = fetchProduct(id);
         product.setDescription(productDto.getDescription());
         product.setCost(productDto.getCost());
         product.setCount(productDto.getCount()); // TODO validate if count >= purchasedCount
+        enrichWithFilters(product, productDto.getFilters());
         return productRepository.save(product);
+    }
+
+    private Product fetchProduct(Long productId) {
+        var product = getByIdOrThrow(productId);
+        accessService.checkUserOwnsCompany(product.getCompany());
+        return product;
+    }
+
+    private void enrichWithFilters(Product product, List<FilterDto> filterDtos) {
+        var filterIds = CollectionUtils.emptyIfNull(filterDtos).stream()
+                .map(FilterDto::getId)
+                .toList();
+        var filters = filterService.getAllByIds(filterIds);
+        product.getFilters().clear();
+        product.getFilters().addAll(filters);
     }
 
     @Override

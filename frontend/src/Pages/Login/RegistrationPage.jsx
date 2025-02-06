@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {Input} from "antd";
-import {MainLayout} from "../Components/Layouts/MainLayout";
-import {CenteredLayout} from "../Components/Layouts/CenteredLayout";
-import {login} from "../Services/AuthService";
-import {SubmitButton} from "../Components/Buttons/SubmitButton";
-import {createCustomer} from "../Services/CustomerService";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
+import {CenteredLayout} from "../../Components/Layouts/CenteredLayout";
+import {login} from "../../Services/AuthService";
+import {SubmitButton} from "../../Components/Buttons/SubmitButton";
+import {createCustomer} from "../../Services/CustomerService";
 
 export function RegistrationPage() {
     document.title = "Registration | E-Shop Pet";

@@ -69,6 +69,12 @@ export const mockProduct = {
         id: 1,
         name: "Test company",
     },
+    filters: [
+        {
+            id: 1,
+            name: "Test filter",
+        }
+    ]
 }
 
 export const mockProducts = Array.from({length: 100}).map((_, i) => {

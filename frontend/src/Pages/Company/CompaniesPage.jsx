@@ -1,13 +1,13 @@
-import {MainLayout} from "../Components/Layouts/MainLayout";
+import {MainLayout} from "../../Components/Layouts/MainLayout";
 import {Button, Flex, Table} from "antd";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {getCompanies} from "../Services/CompanyService";
-import {mockCompanies} from "../mock";
-import {companyColumns} from "../table_columns";
+import {getCompanies} from "../../Services/CompanyService";
+import {mockCompanies} from "../../mock";
+import {companyColumns} from "../../table_columns";
 import Sider from "antd/lib/layout/Sider";
-import {secondaryBackgroundColor} from "../colors";
-import {MenuButtons} from "../Components/Sider/MenuButtons";
+import {secondaryBackgroundColor} from "../../colors";
+import {MenuButtons} from "../../Components/Sider/MenuButtons";
 
 export function CompaniesPage() {
     document.title = "Companies | E-Shop Pet"
@@ -35,12 +35,6 @@ export function CompaniesPage() {
                 setPage(companyPage.currentPage);
                 setTotal(companyPage.totalMatches);
             })
-            /*.then(() => {
-                setCompanies(mockCompanies);
-                setPage(1);
-                setPageSize(10);
-                setTotal(mockCompanies.length);
-            })*/
             .catch(() => {
                 setLoading(false);
                 setCompanies(mockCompanies);
