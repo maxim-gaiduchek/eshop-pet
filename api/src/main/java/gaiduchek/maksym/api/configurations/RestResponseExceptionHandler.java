@@ -4,6 +4,7 @@ import gaiduchek.maksym.api.exceptions.AbstractException;
 import gaiduchek.maksym.api.exceptions.AccessException;
 import gaiduchek.maksym.api.exceptions.AuthorizationException;
 import gaiduchek.maksym.api.exceptions.EntityNotFoundException;
+import gaiduchek.maksym.api.exceptions.FileException;
 import gaiduchek.maksym.api.exceptions.ValidationException;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.AccessExceptionCodes;
 import gaiduchek.maksym.api.exceptions.exceptioncodes.ValidationExceptionCodes;
@@ -64,6 +65,12 @@ public class RestResponseExceptionHandler extends ResponseEntityExceptionHandler
     protected ResponseEntity<Object> handleValidationException(ValidationException exception) {
         var body = getResponse(HttpStatus.BAD_REQUEST, exception);
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {FileException.class})
+    protected ResponseEntity<Object> handleFileException(FileException exception) {
+        var body = getResponse(HttpStatus.INTERNAL_SERVER_ERROR, exception);
+        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @Override

@@ -102,6 +102,19 @@ export async function postRequest(url, body, jsonResponse = true) {
         })
 }
 
+export async function postRequestFormData(url, body, jsonResponse = true) {
+    const headers = buildHeaders();
+    return fetch(url, {
+        method: "POST",
+        body: body,
+        credentials: "include",
+        headers: headers,
+    })
+        .then(response => {
+            return handleResponse(response, jsonResponse, () => postRequestFormData(url, body, jsonResponse))
+        })
+}
+
 export async function putRequest(url, body, jsonResponse = true) {
     const headers = buildHeaders();
     headers.set("Content-Type", "application/json");
@@ -113,6 +126,19 @@ export async function putRequest(url, body, jsonResponse = true) {
     })
         .then(response => {
             return handleResponse(response, jsonResponse, () => putRequest(url, body, jsonResponse))
+        })
+}
+
+export async function putRequestFormData(url, body, jsonResponse = true) {
+    const headers = buildHeaders();
+    return fetch(url, {
+        method: "PUT",
+        body: body,
+        credentials: "include",
+        headers: headers,
+    })
+        .then(response => {
+            return handleResponse(response, jsonResponse, () => putRequestFormData(url, body, jsonResponse))
         })
 }
 
