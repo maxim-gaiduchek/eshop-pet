@@ -22,7 +22,7 @@ public class Image extends BaseEntity {
     private String url;
     @Column(name = "filename")
     private String filename;
-    @Column(name = "fileSize")
+    @Column(name = "file_size")
     private Long fileSize;
     @Column(name = "description")
     private String description;
