@@ -28,7 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private static final String IMAGE_PATH = "./storage/files/images/products/%d";
+    private static final String IMAGE_PATH = "D:/OneDrive/Universities/CTU/TJV/E-Shop/storage/files/images/products/%d";
     private static final String IMAGE_DESCRIPTION = "Image to product with id %d";
 
     private final ProductRepository productRepository;
@@ -105,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCost(productDto.getCost());
         product.setCount(productDto.getCount()); // TODO validate if count >= purchasedCount
         enrichWithFilters(product, productDto.getFilters());
-        // createProductImage(product, productImageFile); // TODO update on other way
+        updateProductImage(product, productImageFile);
         return productRepository.save(product);
     }
 
@@ -122,6 +122,14 @@ public class ProductServiceImpl implements ProductService {
         var filters = filterService.getAllByIds(filterIds);
         product.getFilters().clear();
         product.getFilters().addAll(filters);
+    }
+
+    private void updateProductImage(Product product, MultipartFile productImageFile) {
+        if (productImageFile == null) {
+            return;
+        }
+        imageService.delete(product.getImage());
+        createProductImage(product, productImageFile);
     }
 
     @Override

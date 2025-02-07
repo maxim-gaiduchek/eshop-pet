@@ -5,6 +5,8 @@ create table if not exists images
     updated_at  timestamp,
 
     url         varchar(255) not null,
+    filename    varchar(255) not null,
+    file_size    bigint       not null,
     description varchar(255) not null
 );
 

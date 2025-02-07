@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +48,7 @@ public class ProductController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @RolesAllowed("ROLE_SELLER")
     public ProductDto create(@RequestPart("product") @Validated(CreateGroup.class) ProductDto productDto,
-                             @RequestPart(required = false) MultipartFile productImageFile) {
+                             @RequestPart MultipartFile productImageFile) {
         var product = productService.create(productDto, productImageFile);
         return productMapper.toDto(product);
     }
@@ -57,7 +56,7 @@ public class ProductController {
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @RolesAllowed("ROLE_SELLER")
     public ProductDto update(@PathVariable Long id,
-                             @RequestBody @Validated(UpdateGroup.class) ProductDto productDto,
+                             @RequestPart("product") @Validated(UpdateGroup.class) ProductDto productDto,
                              @RequestPart(required = false) MultipartFile productImageFile) {
         var product = productService.update(id, productDto, productImageFile);
         return productMapper.toDto(product);

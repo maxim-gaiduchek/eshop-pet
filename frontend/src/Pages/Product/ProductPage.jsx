@@ -1,14 +1,15 @@
 import {useParams} from 'react-router-dom';
 import {useEffect, useState} from "react";
 import {getProduct, updateProduct} from "../../Services/ProductService";
-import {Button, Col, Flex, Input, InputNumber, Rate, Row, Select, Tree} from "antd";
+import {Button, Col, Flex, Input, InputNumber, Row, Select, Tree, Upload} from "antd";
 import {mockProduct} from "../../mock";
-import {Comment} from "../../Components/Product/Comment";
 import TextArea from "antd/lib/input/TextArea";
 import {secondaryBackgroundColor, secondaryTextColor} from "../../colors";
 import {getFilters} from "../../Services/FilterService";
 import {SubmitButton} from "../../Components/Buttons/SubmitButton";
 import {toast} from "react-toastify";
+import {apiUrl} from "../../config";
+import {UploadOutlined} from "@ant-design/icons";
 
 export function ProductPage() {
     document.title = "Product | E-Shop Pet";
@@ -18,6 +19,8 @@ export function ProductPage() {
     const [productCost, setProductCost] = useState();
     const [productCount, setProductCount] = useState();
     const [productFilterIds, setProductFilterIds] = useState([]);
+    const [productImageUploaded, setProductImageUploaded] = useState(false);
+    const [productImageFile, setProductImageFile] = useState();
     const [disabled, setDisabled] = useState(false);
     const [filters, setFilters] = useState([]);
     const [filterData, setFilterData] = useState([]);
@@ -57,7 +60,7 @@ export function ProductPage() {
     const saveOnClick = async (e) => {
         e.preventDefault();
         setDisabled(true);
-        updateProduct(product.id, productDescription, productCost, productCount, productFilterIds)
+        updateProduct(product.id, productDescription, productCost, productCount, productFilterIds, productImageFile)
             .then(updatedProduct => {
                 toast("Product successfully updated!");
                 setProduct(updatedProduct)
@@ -73,12 +76,20 @@ export function ProductPage() {
             .map(key => +key.split("-")[1]);
         setProductFilterIds(newProductFilterIds);
     };
+    const uploadImage = (file) => {
+        setProductImageFile(file);
+        setProductImageUploaded(true);
+        return false;
+    };
+    const removeImage = () => {
+        setProductImageUploaded(false);
+    };
     return (
         <div style={{width: "100%", maxWidth: 1200, margin: "0 auto", paddingTop: 20}}>
             <Row wrap={false} gutter={12}>
                 <Col flex="500px">
                     <div className={'productImage'} style={{
-                        backgroundImage: "url(https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg)"
+                        ...(product.image ? {backgroundImage: `url("${apiUrl}/images/${product.image.id}/files")`} : {}),
                     }}></div>
                 </Col>
                 <Col flex="auto">
@@ -87,9 +98,9 @@ export function ProductPage() {
                         <span>| by: {product.company.name}</span>
                     </div>
                     <h4 className={'productTitle'}>&euro;{product.cost}</h4>
-                    <Rate allowHalf defaultValue={2.5} disabled style={{
+                    {/*<Rate allowHalf defaultValue={2.5} disabled style={{
                         margin: "10px 0"
-                    }}/><br/><br/>
+                    }}/>*/}<br/><br/>
                     <div className={"productDescription"}>
                         {product.description}
                     </div>
@@ -135,8 +146,14 @@ export function ProductPage() {
                                 <Select placeholder={"Select a company"} value={product.company.name} disabled={true}
                                         optionFilterProp={"label"} showSearch={true}
                                         style={{width: "80%", margin: "10px 10px"}}/>
+                                <Upload name={"image"} multiple={false} beforeUpload={uploadImage}
+                                        onRemove={removeImage}>
+                                    <Button icon={<UploadOutlined/>} style={{width: "80%", margin: "10px 10px"}}>
+                                        Upload product's image
+                                    </Button>
+                                </Upload>
                                 <SubmitButton
-                                    disabled={disabled || !productDescription || !productCost || !productCount}
+                                    disabled={disabled || !productDescription || !productCost || !productCount || !productImageUploaded}
                                     value={"Save"} style={{width: "80%", margin: "10px 10px"}}/>
                             </Flex>
                             <Flex style={{
@@ -162,7 +179,7 @@ export function ProductPage() {
             ) : (
                 <></>
             )}
-            <div className={'commentsContainer'}>
+            {/*<div className={'commentsContainer'}>
                 <h4>Reviews</h4>
                 <div className={"reviewContainer"}>
                     <span style={{fontSize: 16}}>Leave a review</span>
@@ -176,7 +193,7 @@ export function ProductPage() {
                 <Comment/>
                 <Comment/>
                 <Comment/>
-            </div>
+            </div>*/}
         </div>
     )
 }

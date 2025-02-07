@@ -1,6 +1,6 @@
 import {MainLayout} from "../../Components/Layouts/MainLayout";
 import {useNavigate} from "react-router-dom";
-import {Input, InputNumber, Select} from "antd";
+import {Button, Input, InputNumber, Select, Upload} from "antd";
 import {CenteredLayout} from "../../Components/Layouts/CenteredLayout";
 import {useEffect, useState} from "react";
 import {toast} from "react-toastify";
@@ -11,6 +11,7 @@ import {getCompanies} from "../../Services/CompanyService";
 import Sider from "antd/lib/layout/Sider";
 import {secondaryBackgroundColor} from "../../colors";
 import {MenuButtons} from "../../Components/Sider/MenuButtons";
+import {UploadOutlined} from "@ant-design/icons";
 
 export function ProductCreationPage() {
     document.title = "New product | Seller | E-Shop Pet";
@@ -20,12 +21,14 @@ export function ProductCreationPage() {
     const [productCompanyId, setProductCompanyId] = useState();
     const [productCost, setProductCost] = useState();
     const [productCount, setProductCount] = useState();
+    const [productImageUploaded, setProductImageUploaded] = useState(false);
+    const [productImageFile, setProductImageFile] = useState();
     const [disabled, setDisabled] = useState(false);
     const [companies, setCompanies] = useState([]);
     const createOnClick = async (e) => {
         e.preventDefault();
         setDisabled(true);
-        createProduct(productName, productDescription, productCost, productCount, productCompanyId)
+        createProduct(productName, productDescription, productCost, productCount, productCompanyId, productImageFile)
             .then(createdProduct => {
                 toast("New product successfully created!");
                 navigate("/products/" + createdProduct.id);
@@ -45,6 +48,14 @@ export function ProductCreationPage() {
                 setCompanies([]);
             });
     }, []);
+    const uploadImage = (file) => {
+        setProductImageFile(file);
+        setProductImageUploaded(true);
+        return false;
+    };
+    const removeImage = () => {
+        setProductImageUploaded(false);
+    };
     return (
         <MainLayout>
             <Sider style={{
@@ -84,8 +95,13 @@ export function ProductCreationPage() {
                                 }
                             })}
                             style={{width: "100%", margin: "10px 10px"}}/>
+                    <Upload name={"image"} multiple={false} beforeUpload={uploadImage} onRemove={removeImage}>
+                        <Button icon={<UploadOutlined/>} style={{width: "100%", margin: "10px 10px"}}>
+                            Upload product's image
+                        </Button>
+                    </Upload>
                     <SubmitButton disabled={disabled || !productName || !productDescription || !productCost ||
-                        !productCount || !productCompanyId} value={"Create"}/>
+                        !productCount || !productCompanyId || !productImageUploaded} value={"Create"}/>
                 </form>
             </CenteredLayout>
         </MainLayout>

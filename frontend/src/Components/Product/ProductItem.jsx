@@ -1,5 +1,6 @@
 import {Card} from "antd"
 import {Link} from "react-router-dom";
+import {apiUrl} from "../../config";
 
 export function ProductItem({product}) {
     return (
@@ -7,7 +8,7 @@ export function ProductItem({product}) {
             <Card title={product.name} hoverable={true}
                   cover={
                       <div style={{
-                          backgroundImage: "url(https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg)",
+                          ...(product.image ? {backgroundImage: `url("${apiUrl}/images/${product.image.id}/files")`} : {}),
                           backgroundSize: "cover",
                           backgroundPosition: "contain",
                           width: "100%",
