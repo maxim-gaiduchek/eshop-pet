@@ -13,10 +13,13 @@ import gaiduchek.maksym.api.repository.ProductRepository;
 import gaiduchek.maksym.api.security.services.interfaces.AccessService;
 import gaiduchek.maksym.api.services.interfaces.CompanyService;
 import gaiduchek.maksym.api.services.interfaces.FilterService;
+import gaiduchek.maksym.api.services.interfaces.ImageService;
 import gaiduchek.maksym.api.services.interfaces.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,11 +28,15 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final String IMAGE_PATH = "./storage/files/images/products/%d";
+    private static final String IMAGE_DESCRIPTION = "Image to product with id %d";
+
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final CompanyService companyService;
     private final AccessService accessService;
     private final FilterService filterService;
+    private final ImageService imageService;
 
     @Override
     public Optional<Product> findById(Long id) {
@@ -60,11 +67,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product create(ProductDto productDto) {
+    @Transactional
+    public Product create(ProductDto productDto, MultipartFile productImageFile) {
         var product = productMapper.toEntity(productDto);
         enrichWithCompany(product, productDto);
         product.setDeleted(false);
-        return productRepository.save(product);
+        var savedProduct = productRepository.save(product);
+        createProductImage(savedProduct, productImageFile);
+        return productRepository.save(savedProduct);
     }
 
     private void enrichWithCompany(Product product, ProductDto productDto) {
@@ -79,13 +89,23 @@ public class ProductServiceImpl implements ProductService {
         return company;
     }
 
+    private void createProductImage(Product product, MultipartFile productImageFile) {
+        var url = IMAGE_PATH.formatted(product.getId());
+        var image = imageService.saveFileAndBuildImage(productImageFile, url);
+        var description = IMAGE_DESCRIPTION.formatted(product.getId());
+        image.setDescription(description);
+        product.setImage(image);
+    }
+
     @Override
-    public Product update(Long id, ProductDto productDto) {
+    @Transactional
+    public Product update(Long id, ProductDto productDto, MultipartFile productImageFile) {
         var product = fetchProduct(id);
         product.setDescription(productDto.getDescription());
         product.setCost(productDto.getCost());
         product.setCount(productDto.getCount()); // TODO validate if count >= purchasedCount
         enrichWithFilters(product, productDto.getFilters());
+        // createProductImage(product, productImageFile); // TODO update on other way
         return productRepository.save(product);
     }
 

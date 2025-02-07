@@ -43,4 +43,5 @@ public class ProductDto {
     @ConvertGroup(from = UpdateGroup.class, to = UsedInOtherGroup.class)
     @Valid
     private List<FilterDto> filters;
+    private ImageDto image;
 }
