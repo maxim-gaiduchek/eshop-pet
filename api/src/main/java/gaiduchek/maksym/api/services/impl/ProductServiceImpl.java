@@ -28,7 +28,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private static final String IMAGE_PATH = "D:/OneDrive/Universities/CTU/TJV/E-Shop/storage/files/images/products/%d";
+    private static final String IMAGE_PATH = "/Users/maksymgaiduchek/Documents/Programming/CTU/TJV/eshop-pet/storage/files/images/products/%d";
     private static final String IMAGE_DESCRIPTION = "Image to product with id %d";
 
     private final ProductRepository productRepository;

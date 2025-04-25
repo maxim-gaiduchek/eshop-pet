@@ -19,7 +19,6 @@ export function ProductPage() {
     const [productCost, setProductCost] = useState();
     const [productCount, setProductCount] = useState();
     const [productFilterIds, setProductFilterIds] = useState([]);
-    const [productImageUploaded, setProductImageUploaded] = useState(false);
     const [productImageFile, setProductImageFile] = useState();
     const [disabled, setDisabled] = useState(false);
     const [filters, setFilters] = useState([]);
@@ -78,11 +77,7 @@ export function ProductPage() {
     };
     const uploadImage = (file) => {
         setProductImageFile(file);
-        setProductImageUploaded(true);
         return false;
-    };
-    const removeImage = () => {
-        setProductImageUploaded(false);
     };
     return (
         <div style={{width: "100%", maxWidth: 1200, margin: "0 auto", paddingTop: 20}}>
@@ -146,14 +141,13 @@ export function ProductPage() {
                                 <Select placeholder={"Select a company"} value={product.company.name} disabled={true}
                                         optionFilterProp={"label"} showSearch={true}
                                         style={{width: "80%", margin: "10px 10px"}}/>
-                                <Upload name={"image"} multiple={false} beforeUpload={uploadImage}
-                                        onRemove={removeImage}>
+                                <Upload name={"image"} multiple={false} beforeUpload={uploadImage}>
                                     <Button icon={<UploadOutlined/>} style={{width: "80%", margin: "10px 10px"}}>
                                         Upload product's image
                                     </Button>
                                 </Upload>
                                 <SubmitButton
-                                    disabled={disabled || !productDescription || !productCost || !productCount || !productImageUploaded}
+                                    disabled={disabled || !productDescription || !productCost || !productCount}
                                     value={"Save"} style={{width: "80%", margin: "10px 10px"}}/>
                             </Flex>
                             <Flex style={{
